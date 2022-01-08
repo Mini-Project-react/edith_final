@@ -1,0 +1,210 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,300;0,400;1,200&display=swap');
+
+* {
+  box-sizing: border-box;
+  font-size: 16px;
+}
+body {
+    margin: 0;
+    /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif; */
+      font-family: "Poppins",'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
+      -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }  
+/* tailwind groups */
+.btn1{
+    @apply bg-cgray-heavy rounded-md px-2 py-1 w-full sm:w-auto flex flex-nowrap shadow-md hover:bg-opacity-100 bg-opacity-95  whitespace-nowrap items-center
+    hover:shadow-lg hover:-translate-y-0.5 transform-gpu transition-all duration-150 cursor-pointer border border-transparent border-opacity-10;
+}
+.btn2{
+    /* @apply w-full sm:w-auto flex items-center justify-center text-gray-800 font-medium bg-gray-800 bg-opacity-20 hover:bg-opacity-30 rounded-lg shadow-sm hover:shadow-lg py-3 px-5 border border-white border-opacity-10 transform-gpu hover:-translate-y-0.5  transition-all duration-150; */
+}
+/* login */
+section
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(-30deg,#03a9f4 0%, #3a78b7 50%, #262626 50%, #607d8b 100%);
+    /* filter: hue-rotate(120deg);*/
+    /* animation: animate 10s linear infinite; */
+}
+@keyframes animate
+{
+    0%{
+        filter: hue-rotate(0deg);
+    }
+    100%{
+        filter: hue-rotate(360deg);
+    }
+}
+.box{
+    position: relative;
+    padding: 50px;
+    width: 360px;
+    height: 480px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255,255,255,0.1);
+    border-radius: 6px;
+    box-shadow: 0 5px 35px rgba(0, 0,0,0.2);
+
+}
+.box::after
+{
+    content: "";
+    position: absolute;
+    top: 5px;
+    bottom: 5px;
+    right: 5px;
+    left: 5px;
+    border-radius: 5px;
+    pointer-events: none;
+    background: linear-gradient(to bottom,rgba(255,255,255,0.3) 0%,rgba(255,255,255,0.1) 15%,transparent 50%,transparent 85%,rgba(255,255,255,0.1) 100%);
+}
+.box .form
+{
+    position: relative;
+    width: 100%;
+}
+.box .form h2
+{
+    color: aliceblue;
+    font-weight: 600;
+    letter-spacing: 2px;
+    margin-bottom: 30px;
+}
+.box .form .inputBx
+{
+    position: relative;
+    width: 100%;
+    margin-bottom: 20px;
+}
+.box .form .inputBx input
+{
+width: 100%;
+outline: none;
+border: 1px solid rgba(255,255,255,0.2);
+background: transparent;
+padding: 8px 10px;
+padding-left:35px ;
+border-radius: 6px;
+color: antiquewhite;
+font-size: 16px;
+font-weight: 300;
+box-shadow: inset 0 0 25px rgba(0,0,0,0.2);
+}
+.box .form .inputBx input::placeholder
+{
+    color: #fff;
+}
+.box .form .inputBx input[type="submit"]
+{
+    background: #fff;
+    color: #111;
+    max-width: 100px;
+    padding: 8px 10px;
+    box-shadow: none;
+    font-weight: 500;
+    letter-spacing: 1px;
+    cursor: pointer;
+}
+.box .form .inputBx img
+{
+    position: absolute;
+    height: 23px;
+    width: 23px;
+    top: 8px;
+    left: 10px;
+    transform: scale(0.7);
+    filter: invert(1);
+}
+.remember{
+    position: relative;
+    display: inline-block;
+    color: #fff;
+    font-weight: 300;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+.box .form p{
+    color: #fff;
+    font-weight: 300;
+    font-size: 15px;
+    margin-top: 5px;
+}
+.box .form a{
+    color: #fff;
+    
+}
+
+/* data */
+.datepicker-toggle {
+    position: relative;
+    width: 18px;
+    height: 19px;
+  }
+  .datepicker-toggle-button {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .datepicker-input {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    box-sizing: border-box;
+  }
+  .datepicker-input::-webkit-calendar-picker-indicator {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+  }
+  .user-none {
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  .bringback {
+    z-index: -100;
+  }
+  .selector {
+    user-drag: none;
+    -webkit-user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+  }
+  .apply-fade {
+    animation: fade 2s ease-in 3s forwards;
+  }
+  @keyframes fade {
+    from {
+      opacity: 100%;
+    }
+    to {
+      opacity: 0%;
+      transform: translateY(100%);
+      
+    }
+  }
+  

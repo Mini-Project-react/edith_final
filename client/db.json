@@ -1,0 +1,14 @@
+{
+    "projects":[
+    { "id":"1","head": "Wev Dev", "Memcount": 3, "EndsIn": 3 ,"type":"team"},
+    { "id":"2","head": "Automation", "Memcount": 4, "EndsIn": 2 ,"type":"team"},
+    { "id":"4","head": "CodeKing", "Memcount": 2, "EndsIn": 1 ,"type":"solo"}
+  ],
+  "Live":[
+    { "head": "Wsadfv", "Memcount": 3, "EndsIn": 3 ,"type":"team"},
+    { "head": "CodeKing", "Memcount": 2, "EndsIn": 1 ,"type":"solo"},
+    { "head": "CodeKing", "episode": 2, "EndsIn": 1, "type": "solo" }
+    ],
+    "upcomming":[
+      { "head": "codathon", "Memcount": 2, "EndsIn": 1 ,"type":"solo"}]
+  }

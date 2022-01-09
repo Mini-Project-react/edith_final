@@ -1,7 +1,7 @@
 import axios from "axios";
 export async function fetchDataFromApi(url) {
   const res = await axios(url);
-
+console.log(res);
   // if (!res.errors)
   //   return res.data.data.map(({ attributes, id }) => ({
   //     id,
@@ -19,4 +19,5 @@ export async function fetchDataFromApi(url) {
   //     posterImage: attributes.posterImage,
   //   }));
   if (!res.errors) return res.data;
+  // err ==! null === true restuen 
 }

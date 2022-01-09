@@ -11,12 +11,12 @@ export default function Home() {
   return (
     <HomePage>
       {showContent && (
-        <>
+        <div>
           <HomeTop />
           <Catagories type="projects" />
           <Catagories type="Live" />
           <Catagories type="upcomming" />
-        </>
+          </div>
       )}
       <Outlet />
     </HomePage>

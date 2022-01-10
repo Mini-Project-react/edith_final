@@ -19,6 +19,9 @@ export default function Register(props) {
   const [user] = useAuthState(firebase.auth());
   const navigate = useNavigate();
 
+
+
+
   // useEffect(() => {
   //   // if (user) navigate("/home", { replace: true });
   // }, [user]);
@@ -79,9 +82,9 @@ export default function Register(props) {
 
             <div className="flex w-full space-x-2 mb-2">
               <input
-                className="rounded-md px-4 py-2 bg-white-light transform-gpu transition-all  duration-150 hover:bg-opacity-95 hover:text-gray-800 hover:-translate-y-0.5 "
-                type="submit"
-                value="submit"
+              className="rounded-md px-4 py-2  text-white-light transform-gpu transition-all  duration-150 hover:text-gray-800 hover:-translate-y-0.5 flex flex-nowrap w-fit space-x-2 items-center border border-opacity-60"
+              type="submit"
+                value="sign-up"
                 placeholder="Sign-up"
               />
               <button

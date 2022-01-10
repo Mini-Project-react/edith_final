@@ -3,6 +3,7 @@ import Projects from "../components/Projects";
 import { useFetch } from "../hooks/use-fetch";
 import Mock from "../components/Mock";
 import NavBar from "../components/Navbar";
+import addNew from'./add new.png';
 // import { GlobalContext } from "../context/GlobalContext";
 import { useLocation } from "react-router-dom";
 export default function Home() {
@@ -10,6 +11,7 @@ export default function Home() {
   let showContent = lcoation.pathname === "/";
   return (
     <HomePage>
+    <br/><br/>
       {showContent && (
         <div>
           <HomeTop />
@@ -34,9 +36,11 @@ const HomeTop = () => {
   return (
     <div className="w-full flex flex-col mb-4">
       <Link to={"/create"}>
-        <div className="w-full rounded-md  border-2 border-black border-opacity-40 h-16 p-4 text-center text-cgray-heavy text-opacity-80 text-lg  hover:bg-cgray-700  hover:text-white-light font-medium overflow-hidden transform transition duration-200 hover:scale-105 antialiased">
-          Add new
-        </div>
+      <div className="flex flex-wrap justify-center">
+      <div className="w-6/12 sm:w-8/12 px-4">
+        <img src={addNew} alt="..." className="shadow rounded max-w-full h-auto align-middle border-none" />
+      </div>
+    </div>
       </Link>
       <div className="flex flex-nowrap  py-2 w-full  items-center">
         <p className="ml-auto px-1 text-xs text-opacity-30 italic">

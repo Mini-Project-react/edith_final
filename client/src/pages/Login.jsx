@@ -27,13 +27,14 @@ class Login extends React.Component {
               </label>
 
               <div className="inputBx">
-                <input type="submit" value="submit" placeholder="Login" />
+                <input className="rounded-md px-4 py-2  text-white-light transform-gpu transition-all  duration-150 hover:text-gray-800 hover:-translate-y-0.5 flex flex-nowrap w-fit space-x-2 items-center border border-opacity-60"
+                type="submit" value="submit" placeholder="Login" />
               </div>
             </form>
             <p>
               forget <a href="/">password?</a>
             </p>
-            <Link to="/register-page">create new account!</Link>
+            <Link to="/register">create new account!</Link>
           </div>
         </div>
       </section>

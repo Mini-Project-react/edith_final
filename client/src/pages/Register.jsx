@@ -8,6 +8,7 @@ import * as ROUTES from "../constants/routes";
 import { useContext, useEffect, useState } from "react";
 import { FirebaseContext } from "../context/FirebaseContext";
 import { useAuthState } from "react-firebase-hooks/auth";
+import axios from "axios";
 export default function Register(props) {
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
@@ -16,19 +17,27 @@ export default function Register(props) {
   let isInValid = !pass || !email || !userName;
 
   const { firebase } = useContext(FirebaseContext);
+  // firebase hooks
   const [user] = useAuthState(firebase.auth());
   const navigate = useNavigate();
 
-
-
-
-  // useEffect(() => {
-  //   // if (user) navigate("/home", { replace: true });
-  // }, [user]);
+  useEffect(() => {
+    // if (user) navigate("/home", { replace: true });
+  }, [user]);
   const handleForm = async (e) => {
     e.preventDefault();
     if (!isInValid) {
+      axios
+        .post("http://localhost:5000/api/users/store", {
+          name: userName,
+          password: pass,
+          email,
+        })
+        .then((res) => {
+          console.log(res);
+        });
       console.log("valied", isInValid);
+      navigate(ROUTES.DASH_B);
     } else {
       console.log("not valid ", isInValid);
     }
@@ -85,11 +94,11 @@ export default function Register(props) {
 
             <div className="flex w-full space-x-2 mb-2">
               <input
-              className="rounded-md px-4 py-2  text-white-light transform-gpu transition-all  duration-150 hover:text-gray-800 hover:-translate-y-0.5 flex flex-nowrap w-fit space-x-2 items-center border border-opacity-60"
-              type="submit"
+                className="rounded-md px-4 py-2  text-white-light transform-gpu transition-all  duration-150 hover:text-gray-800 hover:-translate-y-0.5 flex flex-nowrap w-fit space-x-2 items-center border border-opacity-60"
+                type="submit"
                 value="sign-up"
                 placeholder="Sign-up"
-                
+                onClick={handleForm}
               />
               <button
                 className="rounded-md px-4 py-2  text-white-light transform-gpu transition-all  duration-150 hover:text-gray-800 hover:-translate-y-0.5 flex flex-nowrap w-fit space-x-2 items-center border border-opacity-60"

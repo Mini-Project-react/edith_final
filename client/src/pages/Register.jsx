@@ -43,6 +43,7 @@ export default function Register(props) {
               <input
                 type="text"
                 placeholder="username"
+                name="name"
                 required
                 onChange={(e) => setUserName(e.target.value)}
               />
@@ -52,6 +53,7 @@ export default function Register(props) {
             <div className="inputBx">
               <input
                 type="email"
+                name="email"
                 placeholder="email"
                 required
                 onChange={(e) => setEmail(e.target.value)}
@@ -63,6 +65,7 @@ export default function Register(props) {
               <input
                 type="password"
                 placeholder="password"
+                name="password"
                 required
                 onChange={(e) => setPass(e.target.value)}
               />
@@ -86,6 +89,7 @@ export default function Register(props) {
               type="submit"
                 value="sign-up"
                 placeholder="Sign-up"
+                
               />
               <button
                 className="rounded-md px-4 py-2  text-white-light transform-gpu transition-all  duration-150 hover:text-gray-800 hover:-translate-y-0.5 flex flex-nowrap w-fit space-x-2 items-center border border-opacity-60"

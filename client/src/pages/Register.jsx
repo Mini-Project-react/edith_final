@@ -6,8 +6,8 @@ import { Link, useNavigate } from "react-router-dom";
 import * as ROUTES from "../constants/routes";
 
 import { useContext, useEffect, useState } from "react";
-import { FirebaseContext } from "../context/FirebaseContext";
-import { useAuthState } from "react-firebase-hooks/auth";
+// import { FirebaseContext } from "../context/FirebaseContext";
+// import { useAuthState } from "react-firebase-hooks/auth";
 import axios from "axios";
 export default function Register(props) {
   const [userName, setUserName] = useState("");
@@ -16,14 +16,14 @@ export default function Register(props) {
   const [error, setError] = useState("");
   let isInValid = !pass || !email || !userName;
 
-  const { firebase } = useContext(FirebaseContext);
+ // const { firebase } = useContext(FirebaseContext);
   // firebase hooks
-  const [user] = useAuthState(firebase.auth());
+  //const [user] = useAuthState(firebase.auth());
   const navigate = useNavigate();
 
-  useEffect(() => {
+  // useEffect(() => {
     // if (user) navigate("/home", { replace: true });
-  }, [user]);
+  // }, [user]);
   const handleForm = async (e) => {
     e.preventDefault();
     if (!isInValid) {
@@ -102,18 +102,18 @@ export default function Register(props) {
               />
               <button
                 className="rounded-md px-4 py-2  text-white-light transform-gpu transition-all  duration-150 hover:text-gray-800 hover:-translate-y-0.5 flex flex-nowrap w-fit space-x-2 items-center border border-opacity-60"
-                onClick={async () => {
-                  const provider = new firebase.auth.GoogleAuthProvider();
-                  const { user } = await firebase
-                    .auth()
-                    .signInWithPopup(provider);
+               // onClick={async () => {
+                //   const provider = new firebase.auth.GoogleAuthProvider();
+                //   const { user } = await firebase
+                //     .auth()
+                //     .signInWithPopup(provider);
 
-                  if (user) {
-                    navigate(ROUTES.DASH_B, { replace: true });
-                  } else {
-                  }
-                  console.log("user", user);
-                }}
+                //   if (user) {
+                //     navigate(ROUTES.DASH_B, { replace: true });
+                //   } else {
+                //   }
+                //   console.log("user", user);
+                // }}
               >
                 <svg
                   aria-hidden="true"
@@ -131,7 +131,7 @@ export default function Register(props) {
                   ></path>
                 </svg>
                 <h1 className="">sigin-in</h1>
-              </button>
+              </button> 
             </div>
           </form>
 

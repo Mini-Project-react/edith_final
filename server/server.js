@@ -39,3 +39,9 @@ app.post("/api/projects/show", ProjectController.show);
 app.post("/api/projects/store", ProjectController.store);
 app.post("/api/projects/update", ProjectController.update);
 app.post("/api/projects/delete", ProjectController.destroy);
+
+
+app.get("/logout", function (req, res) {
+  req.logout();
+  res.redirect("/");
+});

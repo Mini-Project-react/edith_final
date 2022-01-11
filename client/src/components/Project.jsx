@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 const Project = ({ details }) => {
-  if (!details) return <></>;
+  if (!details) 
   return (
     <Link
       className="mr-4 my-2 md:w-72 min-w-fit w-full md:hover:-translate-y-2 transform transition ease-in-out duration-150 flex"

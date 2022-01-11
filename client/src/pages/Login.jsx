@@ -1,26 +1,53 @@
 import lock from "./lock.png";
 import userImg from "./user.png";
-import { Link } from "react-router-dom";
-import React, { useEffect } from "react";
+
+import * as ROUTES from "../constants/routes";
+import { Link,  useNavigate } from "react-router-dom";
+import React,  { useContext, useEffect, useState } from "react";
 import axios from "axios";
 
+
 function Login(props) {
+
+  const [email, setEmail] = useState("");
+  const [pass, setPass] = useState("");
+  const navigate = useNavigate();
   useEffect(() => {
     
   }, []);
+
+  let isInValid = !pass || !email ;
+  const handleForm = async (e) => {
+    e.preventDefault();
+    if (!isInValid) {
+      axios
+        .post("http://localhost:5000/api/users/index", {
+          pass,
+          email,
+        })
+        .then((res) => {
+          console.log(res);
+        });
+      console.log("valied", isInValid);
+      navigate(ROUTES.DASH_B);
+    } else {
+      console.log("not valid ", isInValid);
+    }
+  };
+
   return (
     <section>
       <div className="box">
         <div className="form">
           <h2>Login</h2>
-          <form>
+          <form onSubmit={handleForm}>
             <div className="inputBx">
-              <input type="email" placeholder="email" required />
+              <input type="email" placeholder="email" required name="email" onChange={(e) => setEmail(e.target.value)} />
               <img src={userImg} alt="user"></img>
             </div>
 
             <div className="inputBx">
-              <input type="password" placeholder="password" required />
+              <input type="password" placeholder="password" required name="pass"  onChange={(e) => setPass(e.target.value)}/>
               <img src={lock} alt="lock"></img>
             </div>
 
@@ -35,6 +62,7 @@ function Login(props) {
                 type="submit"
                 value="submit"
                 placeholder="Login"
+                onClick={handleForm}
               />
             </div>
           </form>

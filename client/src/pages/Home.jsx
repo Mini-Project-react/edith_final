@@ -1,24 +1,31 @@
-import { Link, Outlet } from "react-router-dom";
-import Projects from "../components/Projects";
+import { Link, Outlet, useNavigate } from "react-router-dom";
+import * as ROUTES from "../constants/routes";
 import { useFetch } from "../hooks/use-fetch";
-import Mock from "../components/Mock";
-import NavBar from "../components/Navbar";
-import addNew from'./add new.png';
-// import { GlobalContext } from "../context/GlobalContext";
 import { useLocation } from "react-router-dom";
+
+import NavBar from "../components/Navbar";
+import Mock from "../components/Mock";
+import Projects from "../components/Projects";
+
+import addNew from "./addNew.png";
+// import addNew from "./add new.png";
+import { FaPlus } from "react-icons/fa";
+// import { GlobalContext } from "../context/GlobalContext";
+
 export default function Home() {
   const lcoation = useLocation();
   let showContent = lcoation.pathname === "/";
   return (
     <HomePage>
-    <br/><br/>
+      <br />
+      <br />
       {showContent && (
         <div>
           <HomeTop />
           <Catagories type="projects" />
           <Catagories type="Live" />
           <Catagories type="upcomming" />
-          </div>
+        </div>
       )}
       <Outlet />
     </HomePage>
@@ -27,21 +34,52 @@ export default function Home() {
 const HomePage = (props) => (
   <main className="h-screen dark">
     <NavBar />
-    <div className="md:max-w-screen-2xlw container w-5/6 mx-auto">
+    <div className="md:max-w-screen-2xl container w-5/6 mx-auto">
       {props.children}
     </div>
   </main>
 );
 const HomeTop = () => {
+  const navigateTo = useNavigate();
   return (
-    <div className="w-full flex flex-col mb-4">
-      <Link to={"/create"}>
-      <div className="flex flex-wrap justify-center">
-      <div className="w-6/12 sm:w-8/12 px-4">
-        <img src={addNew} alt="..." className="shadow rounded max-w-full h-auto align-middle border-none" />
-      </div>
-    </div>
-      </Link>
+    <div className="flex flex-col mb-4 w-full">
+      <main className="mx-auto text-center flex items-center justify-center max-h-40 group hover:scale-105 transform-gpu transition-all duration-150 shadow rounded h-32 overflow-hidden relative  w-6/12 md:w-8/12 hover:cursor-pointer">
+        {/* top [plus] */}
+        {/* <span className="z-10 text-white-light absolute -top-2 -left-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-12 w-12"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </span> */}
+        {/* image holder div */}
+
+        <div
+          className=" border-none overflow-hidden bg-black absolute"
+          onClick={() => {
+            navigateTo(ROUTES.CREATE);
+            console.log("asdf");
+          }}
+        >
+          {/* <img src={addNew} alt="..." className="shadow rounded max-w-full h-auto align-middle border-none" /> */}
+          {/* change the image i added just for the scale ++ -mt-16 for going bottom without margin it show the top part*/}
+          <img
+            src={addNew}
+            alt="..."
+            className="object-cover -mt-16 opacity-75 group-hover:opacity-60 transform-gpu transition-all duration-150 -z-10"
+          />
+        </div>
+        <span className="z-10 text-white-light group-hover:text-sm text-xl transform transition-all duration-150">
+          new project
+        </span>
+      </main>
       <div className="flex flex-nowrap  py-2 w-full  items-center">
         <p className="ml-auto px-1 text-xs text-opacity-30 italic">
           create <strong className="text-sm ">{"{your}"}</strong> own procject,

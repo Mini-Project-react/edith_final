@@ -8,7 +8,7 @@ import Home from "./pages/Home";
 import Anime from "./components/Anime";
 import CreatePro from "./components/CreatePro";
 import Login from "./pages/Login";
-
+import Error from "./components/Error";
 export default function App() {
   return (
     <Router>
@@ -18,6 +18,7 @@ export default function App() {
         <Route path={ROUTES.DASH_B} element={<Home />}>
           <Route path="project/:name/:id" element={<Anime />}></Route>
           <Route path="create" element={<CreatePro />} />
+          <Route path="*" element={<Error />} />
         </Route>
       </Routes>
     </Router>

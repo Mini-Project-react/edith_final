@@ -1,4 +1,5 @@
 const ProjectSch=require('../Model/ProjectSchema')
+const verify=require('../verifytoken')
 //shows all the users
 const index=(req,res,next)=>{
 
@@ -16,7 +17,7 @@ const index=(req,res,next)=>{
 const show=(req,res,next)=>{
     let userId=res.body.userId
     ProjectSch.findById(userId).then(response=>{
-
+ 
         res.json({response})
     }).catch(error=>{
         res.json({message:'an error occures'})

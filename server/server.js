@@ -5,13 +5,16 @@ const cors = require("cors");
 const bodyparser = require("body-parser");
 const UserController = require("./Controller/UserController");
 const ProjectController = require("./Controller/ProjectController");
+const authRoute=require("./auth.js");
+const dotenv=require('dotenv');
+const router=require('express').Router();
 
-// const homepage=require('./')
-mongoose.connect("mongodb://localhost:27017/edith", {
+dotenv.config();
+mongoose.connect(process.env.DB_CONNECT, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
-//mongoose.connect('mongodb+srv://edith:19csr@cluster0.sip3x.mongodb.net/edith',{useNewUrlParser:true,useUnifiedTopology:true})
+
 const db = mongoose.connection;
 
 db.on("error", (err) => {
@@ -26,7 +29,7 @@ app.use(morgan("dev"));
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(bodyparser.json());
 app.use(cors());
-
+app.use('/api/users',authRoute);
 app.listen(5000);
 // app.get('/',homepage)
 app.get("/api/users/index", UserController.index);
@@ -39,3 +42,4 @@ app.post("/api/projects/show", ProjectController.show);
 app.post("/api/projects/store", ProjectController.store);
 app.post("/api/projects/update", ProjectController.update);
 app.post("/api/projects/delete", ProjectController.destroy);
+

@@ -158,7 +158,7 @@ export default function NavBar() {
                     </Transition>
                   </Menu>
                 ) : (
-                  <Link to="/register">login</Link>
+                  <Link to="/register" className="text-gray-300 hover:bg-gray-700 hover:text-white pl-3">     login</Link>
                 )}
               </div>
             </div>

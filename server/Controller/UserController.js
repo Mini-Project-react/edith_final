@@ -1,4 +1,8 @@
 const UserSch=require('../Model/UserSchema')
+
+
+
+
 //shows all the users
 const index=(req,res,next)=>{
 

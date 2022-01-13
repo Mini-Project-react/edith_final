@@ -9,7 +9,11 @@ projectid:{type:String},
 head:{type:String},
 desc:{type:String},
 TeamMembersMail:[{type:String}],
-deadline:{type:String}
+deadline:{type:String},
+date:{
+    type: Date,
+    default:Date.now
+  }
 },{timestamps:true})
 
 const ProjectSch=mongoose.model('project',projectSchema)

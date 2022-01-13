@@ -7,4 +7,3 @@ a full stack mern application for maintaining the projects in the student lebvel
 - mern
 - tailwind
 - firebase
-asdfsadf

@@ -3,12 +3,11 @@ import userImg from "./user.png";
 import mail from "./mail.png";
 
 import { Link, useNavigate } from "react-router-dom";
-import * as ROUTES from "../constants/routes";
+import * as ROUTES from "../routes";
 
-import { useContext, useEffect, useState } from "react";
-import { FirebaseContext } from "../context/FirebaseContext";
-import { useAuthState } from "react-firebase-hooks/auth";
+import { useState } from "react";
 import axios from "axios";
+
 export default function Register(props) {
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
@@ -16,14 +15,7 @@ export default function Register(props) {
   const [error, setError] = useState("");
   let isInValid = !pass || !email || !userName;
 
-  const { firebase } = useContext(FirebaseContext);
-  // firebase hooks
-  const [user] = useAuthState(firebase.auth());
   const navigate = useNavigate();
-
-  useEffect(() => {
-    // if (user) navigate("/home", { replace: true });
-  }, [user]);
   const handleForm = async (e) => {
     e.preventDefault();
     if (!isInValid) {
@@ -103,16 +95,7 @@ export default function Register(props) {
               <button
                 className="rounded-md px-4 py-2  text-white-light transform-gpu transition-all  duration-150 hover:text-gray-800 hover:-translate-y-0.5 flex flex-nowrap w-fit space-x-2 items-center border border-opacity-60"
                 onClick={async () => {
-                  const provider = new firebase.auth.GoogleAuthProvider();
-                  const { user } = await firebase
-                    .auth()
-                    .signInWithPopup(provider);
-
-                  if (user) {
-                    navigate(ROUTES.DASH_B, { replace: true });
-                  } else {
-                  }
-                  console.log("user", user);
+                  // register part
                 }}
               >
                 <svg
@@ -144,56 +127,3 @@ export default function Register(props) {
     </section>
   );
 }
-
-// import React from "react";
-// import { Link } from "react-router-dom";
-
-// class Register extends React.Component {
-//   render() {
-//     return (
-//       <section>
-//         <div className="box">
-//           <div className="form">
-//             <h2>Register</h2>
-//             <form>
-//               <div className="inputBx">
-//                 <input type="text" placeholder="username" required />
-//                 <img src={userImg} alt="user"></img>
-//               </div>
-
-//               <div className="inputBx">
-//                 <input type="email" placeholder="email" required />
-//                 <img src={mail} alt="user"></img>
-//               </div>
-
-//               <div className="inputBx">
-//                 <input type="password" placeholder="password" required />
-//                 <img src={lock} alt="lock"></img>
-//               </div>
-
-//               <div className="inputBx">
-//                 <input
-//                   type="password"
-//                   placeholder="confirm password"
-//                   ref={this.input}
-//                 />
-//                 <img src={lock} alt="lock"></img>
-//               </div>
-
-//               <div className="inputBx">
-//                 <input type="submit" value="submit" placeholder="Sign-up" />
-//               </div>
-//             </form>
-
-//             <div className="group space-x-2">
-//               <p className="inline-flex">have an account?</p>
-//               <Link to="/login">login</Link>
-//             </div>
-//           </div>
-//         </div>
-//       </section>
-//     );
-//   }
-// }
-
-// export default Register;

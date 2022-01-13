@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import * as ROUTES from "./constants/routes";
+import * as ROUTES from "./routes";
 import "./styles/globalStyles.css";
 
 import Register from "./pages/Register";

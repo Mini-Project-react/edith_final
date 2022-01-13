@@ -1,17 +1,12 @@
-import { useContext, Fragment } from "react";
-import { FirebaseContext } from "../context/FirebaseContext";
-import { useAuthState } from "react-firebase-hooks/auth";
-
+import { Fragment } from "react";
 import { useLocation } from "react-router";
 import { Link } from "react-router-dom";
-import * as ROUTES from "../constants/routes";
+import * as ROUTES from "../routes";
 
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 
-export default function NavBar({ handleSearch }) {
+export default function NavBar() {
   const loc = useLocation();
-  const { firebase } = useContext(FirebaseContext);
-  const [user] = useAuthState(firebase.auth());
 
   const navigation = [
     {
@@ -41,48 +36,6 @@ export default function NavBar({ handleSearch }) {
   }
 
   return (
-    // <header className="h-14 flex items-center justify-between py-4 px-8 bg-white-light dark:bg-cgray-700 mb-3 text-cgray-heavy dark:text-white-light z-50">
-    //   {user ? (
-    //     <div className="text-lg opacity-90">
-    //       Hello,{" "}
-    //       <strong className="text-2xl font-semibold">{user.displayName}</strong>
-    //     </div>
-    //   ) : (
-    //     <div className="text-2xl  font-bold">Edith</div>
-    //   )}
-    //   <div className="flex group space-x-2 items-center">
-    //     <div>
-    //       <svg
-    //         xmlns="http://www.w3.org/2000/svg"
-    //         className="h-6 w-6"
-    //         fill="none"
-    //         viewBox="0 0 24 24"
-    //         stroke="currentColor"
-    //       >
-    //         <path
-    //           strokeLinecap="round"
-    //           strokeLinejoin="round"
-    //           strokeWidth={2}
-    //           d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-    //         />
-    //       </svg>
-    //     </div>
-    //     {user ? (
-    //       <div className="relative w-6">
-    //         <span className="absolute -top-1 -right-3 w-3 h-3 border-2 border-gray-800 mr-2 bg-blue-400 rounded-full"></span>
-    //         <img
-    //           src={user.photoURL}
-    //           alt="userImg"
-    //           aria-label="user profile picture"
-    //           className="object-fill rounded-full overflow-hidden "
-    //         />
-    //       </div>
-    //     ) : (
-    //       <div></div>
-    //     )}
-    //   </div>
-    // </header>
-
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
         <div className="w-full">
@@ -90,11 +43,11 @@ export default function NavBar({ handleSearch }) {
             <div className="relative flex items-center justify-between h-16">
               <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex-shrink-0 flex items-center  dark:text-white-light ">
-                  {user ? (
+                  {false ? (
                     <div className="text-lg opacity-90">
                       Hello,{" "}
                       <strong className="text-2xl font-semibold">
-                        {user.displayName}
+                        {"usr "}
                       </strong>
                     </div>
                   ) : (
@@ -144,16 +97,12 @@ export default function NavBar({ handleSearch }) {
                 </button>
 
                 {/* Profile dropdown */}
-                {user ? (
+                {false ? (
                   <Menu as="div" className="ml-3 relative">
                     <div>
                       <Menu.Button className="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
                         <span className="sr-only">Open user menu</span>
-                        <img
-                          className="h-8 w-8 rounded-full"
-                          src={user.photoURL}
-                          alt=""
-                        />
+                        <img className="h-8 w-8 rounded-full" src={""} alt="" />
                       </Menu.Button>
                     </div>
                     <Transition

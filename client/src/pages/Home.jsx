@@ -1,6 +1,6 @@
 import { Link, Outlet, useNavigate } from "react-router-dom";
-import * as ROUTES from "../constants/routes";
-import { useFetch } from "../hooks/use-fetch";
+import * as ROUTES from "../routes";
+import { useFetch } from "../use-fetch";
 import { useLocation } from "react-router-dom";
 
 import NavBar from "../components/Navbar";
@@ -8,9 +8,6 @@ import Mock from "../components/Mock";
 import Projects from "../components/Projects";
 
 import addNew from "./addNew.png";
-// import addNew from "./add new.png";
-import { FaPlus } from "react-icons/fa";
-// import { GlobalContext } from "../context/GlobalContext";
 
 export default function Home() {
   const lcoation = useLocation();
@@ -19,12 +16,12 @@ export default function Home() {
     <HomePage>
       <br />
       <br />
-      {showContent && (
+      {lcoation.pathname === "/" && (
         <div>
           <HomeTop />
-          <Catagories type="projects" />
+          {/* <Catagories type="projects" />
           <Catagories type="Live" />
-          <Catagories type="upcomming" />
+          <Catagories type="upcomming" /> */}
         </div>
       )}
       <Outlet />
@@ -44,23 +41,6 @@ const HomeTop = () => {
   return (
     <div className="flex flex-col mb-4 w-full">
       <main className="mx-auto text-center flex items-center justify-center max-h-40 group hover:scale-105 transform-gpu transition-all duration-150 shadow rounded h-32 overflow-hidden relative  w-6/12 md:w-8/12 hover:cursor-pointer">
-        {/* top [plus] */}
-        {/* <span className="z-10 text-white-light absolute -top-2 -left-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-12 w-12"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fillRule="evenodd"
-                d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </span> */}
-        {/* image holder div */}
-
         <div
           className=" border-none overflow-hidden bg-black absolute"
           onClick={() => {
@@ -92,7 +72,6 @@ const HomeTop = () => {
     </div>
   );
 };
-
 const Catagories = ({ type }) => {
   const { State, loading, error } = useFetch(
     `http://localhost:5000/${type.toLowerCase()}`

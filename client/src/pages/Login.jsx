@@ -17,16 +17,19 @@ function Login(props) {
   }, []);
 
   let isInValid = !pass || !email ;
+  let [responseData, setResponseData] = React.useState('')
   const handleForm = async (e) => {
     e.preventDefault();
     if (!isInValid) {
       axios
-        .post("http://localhost:5000/api/users/index", {
-          pass,
-          email,
+        .get("http://localhost:5000/api/users/show", {
+          params: {
+            email: email
+          }
         })
         .then((res) => {
-          console.log(res);
+          setResponseData(res.data)
+          console.log(responseData);
         });
       console.log("valied", isInValid);
       navigate(ROUTES.DASH_B);

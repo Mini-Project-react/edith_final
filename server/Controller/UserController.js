@@ -14,13 +14,14 @@ const index=(req,res,next)=>{
 }
 //shows single user
 const show=(req,res,next)=>{
-    let userId=res.body.userId
-    UserSch.findById(userId).then(response=>{
+    let email=req.body.email
+    UserSch.find({"email":email}).then(response=>{
 
         res.json({response})
     }).catch(error=>{
         res.json({message:'an error occures'})
     })
+    
 
 }
 //add new user to db

@@ -11,7 +11,7 @@ mongoose.connect("mongodb://localhost:27017/edith", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
-//mongoose.connect('mongodb+srv://edith:19csr@cluster0.sip3x.mongodb.net/edith',{useNewUrlParser:true,useUnifiedTopology:true})
+//mongoose.connect('mongodb+srv://edith:19csr@mini.sip3x.mongodb.net/edith?retryWrites=true&w=majority')
 const db = mongoose.connection;
 
 db.on("error", (err) => {
@@ -30,7 +30,7 @@ app.use(cors());
 app.listen(5000);
 // app.get('/',homepage)
 app.get("/api/users/index", UserController.index);
-app.post("/api/users/show", UserController.show);
+app.get("/api/users/show", UserController.show);
 app.post("/api/users/store", UserController.store);
 app.post("/api/users/update", UserController.update);
 app.post("/api/users/delete", UserController.destroy);

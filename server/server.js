@@ -5,9 +5,10 @@ const cors = require("cors");
 const bodyparser = require("body-parser");
 const UserController = require("./Controller/UserController");
 const ProjectController = require("./Controller/ProjectController");
-const authRoute=require("./auth.js");
-const dotenv=require('dotenv');
-const router=require('express').Router();
+const authRoute = require("./auth.js");
+const dotenv = require("dotenv");
+const verifytoken = require("./verifytoken");
+const router = require("express").Router();
 
 dotenv.config();
 mongoose.connect(process.env.DB_CONNECT, {
@@ -25,11 +26,12 @@ db.once("open", () => {
 });
 
 const app = express();
+// middleWares
 app.use(morgan("dev"));
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(bodyparser.json());
-app.use(cors());
-app.use('/api/users',authRoute);
+app.use(cors({ exposedHeaders: "auth-token" }));
+app.use("/api/users", authRoute);
 app.listen(5000);
 // app.get('/',homepage)
 app.get("/api/users/index", UserController.index);
@@ -43,3 +45,8 @@ app.post("/api/projects/store", ProjectController.store);
 app.post("/api/projects/update", ProjectController.update);
 app.post("/api/projects/delete", ProjectController.destroy);
 
+app.get("/api/auth/post", verifytoken, (req, res) => {
+  res.json({
+    exclusive: "yes it is ",
+  });
+});

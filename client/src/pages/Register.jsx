@@ -7,6 +7,9 @@ import * as ROUTES from "../routes";
 
 import { useState } from "react";
 import axios from "axios";
+import { getUserRegisterApi } from "../helper";
+import { register } from "../features/userReducer";
+import { useDispatch } from "react-redux";
 
 export default function Register(props) {
   const [userName, setUserName] = useState("");
@@ -14,32 +17,41 @@ export default function Register(props) {
   const [pass, setPass] = useState("");
   const [error, setError] = useState("");
   let isInValid = !pass || !email || !userName;
-
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleForm = async (e) => {
     e.preventDefault();
     if (!isInValid) {
       axios
-        .post("http://localhost:5000/api/users/store", {
+        .post(getUserRegisterApi(), {
           name: userName,
           password: pass,
           email,
         })
-        .then((res) => {
-          console.log(res);
+        .then(({ data }) => {
+          if (data.error) {
+            setError(data.error.message);
+          } else {
+            dispatch(
+              register({ displayName: userName, email, userId: data.userId })
+            );
+            navigate("/");
+          }
+        })
+        .catch((err) => {
+          setError(err.message);
         });
-      console.log("valied", isInValid);
-      navigate(ROUTES.DASH_B);
     } else {
-      console.log("not valid ", isInValid);
+      alert("check the fields");
     }
+    console.log("register instance");
   };
   return (
     <section>
       <div className="box">
         <div className="form">
           <h2>Register</h2>
-          <form onSubmit={handleForm}>
+          <form>
             <div className="inputBx">
               <input
                 type="text"
@@ -117,7 +129,7 @@ export default function Register(props) {
               </button>
             </div>
           </form>
-
+          <p className="font-medium underline">{error}</p>
           <div className="group space-x-2">
             <p className="inline-flex">have an account?</p>
             <Link to="/login">login</Link>

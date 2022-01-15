@@ -5,7 +5,7 @@ import * as ROUTES from "../routes";
 
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 
-export default function NavBar() {
+export default function NavBar({ user }) {
   const loc = useLocation();
 
   const navigation = [
@@ -34,7 +34,7 @@ export default function NavBar() {
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
   }
-
+  console.log(user);
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
@@ -43,11 +43,11 @@ export default function NavBar() {
             <div className="relative flex items-center justify-between h-16">
               <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex-shrink-0 flex items-center  dark:text-white-light ">
-                  {false ? (
+                  {user ? (
                     <div className="text-lg opacity-90">
                       Hello,{" "}
                       <strong className="text-2xl font-semibold">
-                        {"usr "}
+                        {user.displayName}
                       </strong>
                     </div>
                   ) : (
@@ -62,8 +62,8 @@ export default function NavBar() {
                         to={item.href}
                         className={classNames(
                           item.current
-                            ? "bg-gray-400 text-white"
-                            : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                            ? "bg-gray-600 text-white-light  "
+                            : "text-gray-300 hover:bg-gray-700 ",
                           "px-3 py-2 rounded-md text-sm font-medium"
                         )}
                         aria-current={item.current ? "page" : undefined}
@@ -77,7 +77,7 @@ export default function NavBar() {
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 <button
                   type="button"
-                  className="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+                  className="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white-light focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
                 >
                   <span className="sr-only">View notifications</span>
                   <svg
@@ -114,7 +114,7 @@ export default function NavBar() {
                       leaveFrom="transform opacity-100 scale-100"
                       leaveTo="transform opacity-0 scale-95"
                     >
-                      <Menu.Items className=" bg-gray-200 origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
+                      <Menu.Items className=" bg-gray-200 origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
                         <Menu.Item>
                           {({ active }) => (
                             <a
@@ -158,7 +158,14 @@ export default function NavBar() {
                     </Transition>
                   </Menu>
                 ) : (
-                  <Link to="/register" className="text-gray-300 hover:bg-gray-700 hover:text-white pl-3">     login</Link>
+                  <>
+                    <Link
+                      to="/login"
+                      className="border-b-2 border-r-2 ml-2 border-violet-900 border-opacity-50 text-gray-300 hover:bg-gray-700 hover:text-white-light  px-3 py-2 rounded-md text-sm font-medium hover:-translate-y-[1px] hover:-translate-x-[1px] transform-gpu transition-all duration-200"
+                    >
+                      log-in
+                    </Link>
+                  </>
                 )}
               </div>
             </div>

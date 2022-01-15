@@ -1,32 +1,71 @@
 import lock from "./lock.png";
 import userImg from "./user.png";
-import { Link } from "react-router-dom";
-import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 import axios from "axios";
+import { getUserLogin } from "../helper";
+import { register } from "../features/userReducer";
+import { useDispatch } from "react-redux";
 
 function Login(props) {
-  useEffect(() => {
-    
-  }, []);
+  const [email, setEmail] = useState("");
+  const [pass, setPass] = useState("");
+  const [err, setErr] = useState("");
+  const navigate = useNavigate();
+  let isNotValid = !email && !pass;
+
+  const dispatch = useDispatch();
+  const handleLogin = (e) => {
+    e.preventDefault();
+    console.log(isNotValid);
+    if (isNotValid) {
+      alert("check the field and try again");
+    } else
+      axios
+        .post(getUserLogin(), {
+          email,
+          password: pass,
+        })
+        .then((res) => {
+          if (!res.data.error) {
+            navigate("/");
+            dispatch(register(res.data));
+          } else setErr(res.data.error.message);
+        })
+        .catch((err) => console.log(err));
+  };
   return (
     <section>
       <div className="box">
         <div className="form">
           <h2>Login</h2>
-          <form>
+          <form onSubmit={handleLogin}>
             <div className="inputBx">
-              <input type="email" placeholder="email" required />
+              <input
+                type="email"
+                placeholder="email"
+                required
+                value={email}
+                onChange={({ target }) => setEmail(target.value)}
+                autoComplete="true"
+              />
               <img src={userImg} alt="user"></img>
             </div>
 
             <div className="inputBx">
-              <input type="password" placeholder="password" required />
+              <input
+                type="password"
+                placeholder="password"
+                required
+                value={pass}
+                onChange={({ target }) => setPass(target.value)}
+              />
               <img src={lock} alt="lock"></img>
             </div>
 
-            <label className="remember">
-              <input type="checkbox" />
-              remember me
+            <label className="flex space-x-2 items-center mb-2">
+              <input type="checkbox" className="mt-1" />
+              <p className="inline-flex">remember me</p>
             </label>
 
             <div className="inputBx">
@@ -38,6 +77,7 @@ function Login(props) {
               />
             </div>
           </form>
+          <p className="underline font-medium">{err}</p>
           <p>
             forget <a href="/">password?</a>
           </p>

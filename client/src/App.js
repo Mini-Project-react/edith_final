@@ -3,12 +3,9 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import * as ROUTES from "./routes";
 import "./styles/globalStyles.css";
 
-import Register from "./pages/Register";
-import Home from "./pages/Home";
-import Anime from "./components/Anime";
-import CreatePro from "./components/CreatePro";
-import Login from "./pages/Login";
-import Error from "./components/Error";
+import { Register, Home, Login } from "./pages";
+import { Error, CreatePro, Anime } from "./components";
+
 export default function App() {
   return (
     <Router>

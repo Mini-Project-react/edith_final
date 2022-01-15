@@ -8,15 +8,31 @@ import Mock from "../components/Mock";
 import Projects from "../components/Projects";
 
 import addNew from "./addNew.png";
+import { useSelector } from "react-redux";
+import { selectUser } from "../features/userReducer";
+import { useEffect } from "react";
 
 export default function Home() {
-  const lcoation = useLocation();
-  let showContent = lcoation.pathname === "/";
+  let showContent = useLocation().pathname === "/";
+  const user = useSelector(selectUser);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    !user && navigate("/register");
+  }, []);
+  const HomePage = (props) => (
+    <main className="h-screen dark">
+      <NavBar user={user} />
+      <div className="md:max-w-screen-2xl container w-5/6 mx-auto">
+        {props.children}
+      </div>
+    </main>
+  );
   return (
     <HomePage>
       <br />
       <br />
-      {lcoation.pathname === "/" && (
+      {showContent && (
         <div>
           <HomeTop />
           {/* <Catagories type="projects" />
@@ -28,14 +44,7 @@ export default function Home() {
     </HomePage>
   );
 }
-const HomePage = (props) => (
-  <main className="h-screen dark">
-    <NavBar />
-    <div className="md:max-w-screen-2xl container w-5/6 mx-auto">
-      {props.children}
-    </div>
-  </main>
-);
+
 const HomeTop = () => {
   const navigateTo = useNavigate();
   return (

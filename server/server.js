@@ -23,6 +23,8 @@ db.on("error", (err) => {
 });
 db.once("open", () => {
   console.log(" database connection established");
+app.listen(5000);
+
 });
 
 const app = express();
@@ -32,14 +34,13 @@ app.use(bodyparser.urlencoded({ extended: true }));
 app.use(bodyparser.json());
 app.use(cors({ exposedHeaders: "auth-token" }));
 app.use("/api/users", authRoute);
-app.listen(5000);
 // app.get('/',homepage)
 app.get("/api/users/index", UserController.index);
 app.post("/api/users/show", UserController.show);
 app.post("/api/users/store", UserController.store);
 app.post("/api/users/update", UserController.update);
 app.post("/api/users/delete", UserController.destroy);
-app.get("/api/projects/index", ProjectController.index);
+app.get("/api/projects", ProjectController.index);
 app.post("/api/projects/show", ProjectController.show);
 app.post("/api/projects/store", ProjectController.store);
 app.post("/api/projects/update", ProjectController.update);

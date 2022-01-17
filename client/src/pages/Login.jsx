@@ -17,7 +17,7 @@ function Login(props) {
   const dispatch = useDispatch();
   const handleLogin = (e) => {
     e.preventDefault();
-    console.log(isNotValid);
+  
     if (isNotValid) {
       alert("check the field and try again");
     } else

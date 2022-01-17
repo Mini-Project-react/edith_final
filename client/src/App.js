@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import * as ROUTES from "./routes";
 import "./styles/globalStyles.css";
 
-import { Register, Home, Login } from "./pages";
+import { Register, Home, Login, Profile } from "./pages";
 import { Error, CreatePro, Anime } from "./components";
 
 export default function App() {
@@ -15,6 +15,7 @@ export default function App() {
         <Route path={ROUTES.DASH_B} element={<Home />}>
           <Route path="project/:name/:id" element={<Anime />}></Route>
           <Route path="create" element={<CreatePro />} />
+          <Route path="profile" element={<Profile />} />
           <Route path="*" element={<Error />} />
         </Route>
       </Routes>

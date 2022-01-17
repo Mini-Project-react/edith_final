@@ -49,7 +49,7 @@ const HomeTop = () => {
   const navigateTo = useNavigate();
   return (
     <div className="flex flex-col mb-4 w-full">
-      <main className="mx-auto text-center flex items-center justify-center max-h-40 group hover:scale-105 transform-gpu transition-all duration-150 shadow rounded h-32 overflow-hidden relative  w-6/12 md:w-8/12 hover:cursor-pointer">
+      <main className="mx-auto text-center flex items-center justify-center max-h-40 group hover:scale-105 transform-gpu transition-transform duration-150 shadow rounded md:h-32 h-20 overflow-hidden relative  w-10/12 md:w-8/12 hover:cursor-pointer">
         <div
           className=" border-none overflow-hidden bg-black absolute"
           onClick={() => {
@@ -62,7 +62,7 @@ const HomeTop = () => {
           <img
             src={addNew}
             alt="..."
-            className="object-cover -mt-16 opacity-75 group-hover:opacity-60 transform-gpu transition-all duration-150 -z-10"
+            className="object-cover -mt-16 opacity-75 group-hover:opacity-60 transform-gpu transition-opacity duration-150 -z-10 h-full"
           />
         </div>
         <span className="z-10 text-white-light group-hover:text-sm text-xl transform transition-all duration-150">

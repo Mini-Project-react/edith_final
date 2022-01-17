@@ -14,10 +14,11 @@ const userSlice = createSlice({
     },
     logout: (state) => {
       state.value = null;
+      localStorage.removeItem("user");
     },
   },
 });
 
-export const { register } = userSlice.actions;
+export const { register, logout } = userSlice.actions;
 export const selectUser = (state) => state.user.value;
 export default userSlice.reducer;

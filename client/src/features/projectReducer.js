@@ -1,21 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  value: JSON.parse(localStorage.getItem("project")) || null,
+  currentProjects: JSON.parse(localStorage.getItem("projects")) || [],
 };
 
 const projectSlice = createSlice({
-  name: "project",
+  name: "projects",
   initialState,
   reducers: {
-   project: (state, { payload }) => {
-      localStorage.setItem("project", JSON.stringify(payload));
-      state.value = payload;
+    AddTocurrentProjects: (state, { payload }) => {
+      state.currentProjects = [payload, ...state.currentProjects];
+      localStorage.setItem("projects", JSON.stringify(state.currentProjects));
     },
-   
   },
 });
 
-export const { project } = projectSlice.actions;
-//export const selectUser = (state) => state.user.value;
+export const { AddTocurrentProjects } = projectSlice.actions;
+export const selectCurrProjects = (state) => state.projects.currentProjects;
 export default projectSlice.reducer;

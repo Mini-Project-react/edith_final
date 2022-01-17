@@ -1,13 +1,16 @@
-import { Fragment } from "react";
+import { logout } from "../features/userReducer";
 import { useLocation } from "react-router";
+import { Fragment } from "react";
 import { Link } from "react-router-dom";
 import * as ROUTES from "../routes";
-import userImg from "../pages/user.png";
+
 import { Disclosure, Menu, Transition } from "@headlessui/react";
+import { useDispatch } from "react-redux";
 
 export default function NavBar({ user }) {
+  console.log(user);
   const loc = useLocation();
-
+  const dispatch = useDispatch();
   const navigation = [
     {
       name: "Home",
@@ -34,47 +37,53 @@ export default function NavBar({ user }) {
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
   }
-  console.log(user);
+  const handleSignOut = () => {
+    dispatch(logout());
+  };
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
-        <div className="w-full">
-          <div className="w-11/12 mx-auto px-2 sm:px-6 lg:px-8">
+        <>
+          <div className="w-11/12 mx-auto">
             <div className="relative flex items-center justify-between h-16">
-              <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
-                <div className="flex-shrink-0 flex items-center  dark:text-white-light ">
+              <div className="flex items-center justify-center sm:items-stretch sm:justify-start">
+                <div className="dark:text-white-light ">
                   {user ? (
-                    <div className="text-lg opacity-90">
+                    <p className="text-lg opacity-90">
                       Hello,{" "}
                       <strong className="text-2xl font-semibold">
                         {user.displayName}
                       </strong>
-                    </div>
+                    </p>
                   ) : (
                     <div className="text-2xl  font-bold">Edith</div>
                   )}
                 </div>
-                <div className="hidden md:block sm:ml-auto">
-                  <div className="flex space-x-4">
-                    {navigation.map((item) => (
-                      <Link
-                        key={item.name}
-                        to={item.href}
-                        className={classNames(
-                          item.current
-                            ? "bg-gray-600 text-white-light  "
-                            : "text-gray-300 hover:bg-gray-700 ",
-                          "px-3 py-2 rounded-md text-sm font-medium"
-                        )}
-                        aria-current={item.current ? "page" : undefined}
-                      >
-                        {item.name}
-                      </Link>
-                    ))}
+                {user && (
+                  <div className="hidden md:block ml-4">
+                    <div className="flex space-x-4">
+                      {navigation.map((item) => (
+                        <Link
+                          key={item.name}
+                          to={item.href}
+                          className={classNames(
+                            item.current
+                              ? "bg-gray-600 text-white-light  "
+                              : "text-gray-300 hover:bg-gray-700 ",
+                            "px-3 py-2 rounded-md text-sm font-medium"
+                          )}
+                          aria-current={item.current ? "page" : undefined}
+                        >
+                          {item.name}
+                        </Link>
+                      ))}
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
+              {/* nav left */}
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                {/* notification icon */}
                 <button
                   type="button"
                   className="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white-light focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
@@ -102,7 +111,16 @@ export default function NavBar({ user }) {
                     <div>
                       <Menu.Button className="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
                         <span className="sr-only">Open user menu</span>
-                        <img className="h-8 w-8 rounded-full" src={userImg} alt="" />
+                        <div className="h-8 w-8 rounded-full overflow-hidden">
+                          <img
+                            className="object-cover h-full"
+                            // replace the user img
+                            src={
+                              "https://w.wallhaven.cc/full/13/wallhaven-135vl3.png"
+                            }
+                            alt=""
+                          />
+                        </div>
                       </Menu.Button>
                     </div>
                     <Transition
@@ -117,56 +135,55 @@ export default function NavBar({ user }) {
                       <Menu.Items className=" bg-gray-200 origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
                         <Menu.Item>
                           {({ active }) => (
-                            <a
-                              href="#"
+                            <Link
+                              to="/profile"
                               className={classNames(
                                 active ? "bg-gray-100" : "",
                                 "block px-4 py-2 text-sm text-gray-700"
                               )}
                             >
                               Your Profile
-                            </a>
+                            </Link>
                           )}
                         </Menu.Item>
                         <Menu.Item>
                           {({ active }) => (
-                            <a
-                              href="#"
+                            <Link
+                              to="#"
                               className={classNames(
                                 active ? "bg-gray-100" : "",
                                 "block px-4 py-2 text-sm text-gray-700"
                               )}
                             >
                               Settings
-                            </a>
+                            </Link>
                           )}
                         </Menu.Item>
                         <Menu.Item>
                           {({ active }) => (
-                            <a
+                            <button
                               href="#"
-                            //  onClick={}
+                              //  onClick={}
                               className={classNames(
                                 active ? "bg-gray-100" : "",
-                                "block px-4 py-2 text-sm text-gray-700"
+                                "block px-4 py-2 text-sm text-gray-700 w-full text-left"
                               )}
+                              onClick={handleSignOut}
                             >
                               Sign out
-                            </a>
+                            </button>
                           )}
                         </Menu.Item>
                       </Menu.Items>
                     </Transition>
                   </Menu>
                 ) : (
-                  
-                    <Link
-                      to="/login"
-                      className="border-b-2 border-r-2 ml-2 border-violet-900 border-opacity-50 text-gray-300 hover:bg-gray-700 hover:text-white-light  px-3 py-2 rounded-md text-sm font-medium hover:-translate-y-[1px] hover:-translate-x-[1px] transform-gpu transition-all duration-200"
-                    >
-                      log-in
-                    </Link>
-             
+                  <Link
+                    to="/login"
+                    className="border-b-2 border-r-2 ml-2 border-violet-900 border-opacity-50 text-gray-300 hover:bg-gray-700 hover:text-white-light  px-3 py-2 rounded-md text-sm font-medium hover:-translate-y-[1px] hover:-translate-x-[1px] transform-gpu transition-all duration-200"
+                  >
+                    log-in
+                  </Link>
                 )}
               </div>
             </div>
@@ -192,7 +209,7 @@ export default function NavBar({ user }) {
               ))}
             </div>
           </Disclosure.Panel>
-        </div>
+        </>
       )}
     </Disclosure>
   );

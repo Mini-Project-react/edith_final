@@ -1,5 +1,6 @@
 const UserSch = require("./Model/UserSchema");
-const router = require("express").Router();
+
+router = require("express").Router();
 const jwt = require("jsonwebtoken");
 const { registeration, login } = require("./validation");
 const bcrypt = require("bcryptjs");

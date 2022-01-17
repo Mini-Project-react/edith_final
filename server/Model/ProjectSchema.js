@@ -1,14 +1,20 @@
 const mongoose=require('mongoose')
 const Schema=mongoose.Schema
+// trk : [{
+//   lat : String,
+//   lng : String
+//    }]
+// or
 
+// trk : { type : Array , "default" : [] }
 const projectSchema= new mongoose.Schema({
     
-teamname:{type:String},
+projectname:{type:String},
 teamleaderid:{type:String},
 projectid:{type:String},
 head:{type:String},
 desc:{type:String},
-TeamMembersMail:[{type:String}],
+teamMembersMail:{type:Array,"default":[]},
 deadline:{type:String},
 date:{
     type: Date,

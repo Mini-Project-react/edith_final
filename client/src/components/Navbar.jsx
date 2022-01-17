@@ -2,7 +2,7 @@ import { Fragment } from "react";
 import { useLocation } from "react-router";
 import { Link } from "react-router-dom";
 import * as ROUTES from "../routes";
-
+import userImg from "../pages/user.png";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 
 export default function NavBar({ user }) {
@@ -97,12 +97,12 @@ export default function NavBar({ user }) {
                 </button>
 
                 {/* Profile dropdown */}
-                {false ? (
+                {user ? (
                   <Menu as="div" className="ml-3 relative">
                     <div>
                       <Menu.Button className="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
                         <span className="sr-only">Open user menu</span>
-                        <img className="h-8 w-8 rounded-full" src={""} alt="" />
+                        <img className="h-8 w-8 rounded-full" src={userImg} alt="" />
                       </Menu.Button>
                     </div>
                     <Transition
@@ -145,6 +145,7 @@ export default function NavBar({ user }) {
                           {({ active }) => (
                             <a
                               href="#"
+                            //  onClick={}
                               className={classNames(
                                 active ? "bg-gray-100" : "",
                                 "block px-4 py-2 text-sm text-gray-700"
@@ -158,14 +159,14 @@ export default function NavBar({ user }) {
                     </Transition>
                   </Menu>
                 ) : (
-                  <>
+                  
                     <Link
                       to="/login"
                       className="border-b-2 border-r-2 ml-2 border-violet-900 border-opacity-50 text-gray-300 hover:bg-gray-700 hover:text-white-light  px-3 py-2 rounded-md text-sm font-medium hover:-translate-y-[1px] hover:-translate-x-[1px] transform-gpu transition-all duration-200"
                     >
                       log-in
                     </Link>
-                  </>
+             
                 )}
               </div>
             </div>

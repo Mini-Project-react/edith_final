@@ -1,21 +1,77 @@
 import { useState } from "react";
+import { project } from "../features/projectReducer";
+import axios from "axios";
+import { getProjectApi } from "../helper";
+import { useDispatch } from "react-redux";
 import InputText from "./InputText";
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectUser } from "../features/userReducer";
 // import { FaCalendar, FaCalendarAlt } from "react-icons/fa";
 export default function CreatePro() {
   const [members, setMembers] = useState([{ id: 1, memEmail: "default" }]);
   const [dateinput, setDateinput] = useState("2021-10-06");
+  const [projectname, setProjectName] = useState("");
+  const [desc, setDesc] = useState("");
+  const [head, setHead] = useState("");
+  const [error, setError] = useState("");
+ 
+  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
+  const navigate = useNavigate();
+  let isInValid = !projectname || !desc;
+  const handleForm = async (e) => {
+    e.preventDefault();
+    console.log(members);
+    if (!isInValid) {
+      console.log(user.userId);
+      axios
+        .post(getProjectApi(), {
+          projectname: projectname,
+          teamleaderid: user.userId,
+          desc: desc,
+          head:head,
+          deadline:dateinput,
+          teamMembersMail:members,
+
+        })
+        .then(({ data }) => {
+          if (data.error) {
+            setError(data.error.message);
+          } else {
+            dispatch(
+              project({ projectName: projectname, desc, projectId: data.projectId })
+            );
+            navigate("/");
+          }
+        })
+        .catch((err) => {
+          setError(err.message);
+        });
+    } else {
+      alert("check the fields");
+    }
+    console.log("project stored in db");
+  };
   return (
     <div className="">
       <form className="my-2">
         <InputText
+        
           type="text"
-          contentHead="Project Name"
+          contentHead="ProjectName"
           placeholder="Edith"
+          name="projectname"
+          onChange={(e) => setProjectName(e.target.value)}
+         
         />
+        
         <InputText
           type="text"
           contentHead="what is it about"
           placeholder="a mern project"
+          name="head"
+          onChange={(e) => setHead(e.target.value)}
         />
         <InputText type="text" contentHead="studio" placeholder="ufotables" />
         <div className="flex  mb-4">
@@ -42,7 +98,7 @@ export default function CreatePro() {
             <div
               onClick={() =>
                 members.length < 3 &&
-                setMembers((mem) => [...mem, { id: mem[mem.length - 1].id }])
+                setMembers((mem) => [...mem, { id: mem[mem.length - 1].id+1 }])
               }
               className="h-5 w-5 opacity-70 cursor-pointer hover:opacity-80"
             >
@@ -72,6 +128,16 @@ export default function CreatePro() {
                 id={"contentHead"}
                 type="text"
                 placeholder={`user ${index + 1} email`}
+
+                onChange={(e) => {
+                  let newMem = members.map(mem=>{
+                    if(index+1 == mem.id){
+                      return {...mem,memEmail:e.target.value}
+                    }
+                    return mem;
+                  })
+                  setMembers(newMem);
+                }}
               />
             </div>
           </div>
@@ -100,6 +166,7 @@ export default function CreatePro() {
                 </svg>
               </span>
               <input
+              name="deadline"
                 type="date"
                 className="datepicker-input"
                 onChange={(e) => setDateinput(e.target.value)}
@@ -122,12 +189,18 @@ export default function CreatePro() {
           </div>
           <div className="md:w-1/2">
             <textarea
+            name="desc"
+            onChange={(e) => setDesc(e.target.value)}
               className="bg-gray-800 appearance-none border-2 border-gray-800
     border-opacity-5 rounded w-full py-2 px-4 text-white-light text-opacity-70 leading-tight focus:outline-none focus:bg-white focus:border-gray-800 focus:border-opacity-50 shadow-sm placeholder-gray-400 focus:bg-gray-300 transform transition-colors duration-300 focus:text-gray-800 focus:placeholder-gray-800"
               placeholder="make it as long as you can"
             />
           </div>
         </div>
+        <p className="font-medium underline">{error}</p>
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded" onClick={handleForm}>
+  Button
+</button>
       </form>
       
     </div>

@@ -1,4 +1,4 @@
-const InputText = ({ type, contentHead, placeholder }) => (
+const InputText = ({ type, contentHead, placeholder,onChange }) => (
   <div
     className="flex flex-nowrap w-full flex-col md:flex-row mb-6
      md:items-center"
@@ -19,6 +19,7 @@ const InputText = ({ type, contentHead, placeholder }) => (
         id={contentHead}
         type={type}
         placeholder={placeholder}
+        onChange={onChange}
       />
     </div>
   </div>

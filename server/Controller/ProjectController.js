@@ -26,20 +26,19 @@ const show=(req,res,next)=>{
 }
 //add new user to db
 const store=(req,res,next)=>{
-    let login=new ProjectSch({
+    let project=new ProjectSch({
 
-        teamname:req.body.teamname,
-       
-        teamleaderid:req.body.userId,
+        projectname:req.body.projectname,
+        teamleaderid:req.body.teamleaderid,
         projectid:req.body.projectid,
         head:req.body.head,
         desc:req.body.desc,
-        TeamMembersMail:[req.body.mails],
+        teamMembersMail:req.body.teamMembersMail,
         deadline:req.body.deadline,
         //photo:req.body.photo
 
 })
-login.save().then(response=>{
+project.save().then(response=>{
 
     res.json({message:'employee added successfully'})
 }).catch(error=>{

@@ -7,3 +7,6 @@ export function getUserLogin() {
 export function getProject(projectID) {
   return "";
 }
+export function getProjectApi() {
+  return "http://localhost:5000/api/projects/store";
+}

@@ -1,4 +1,6 @@
 const ProjectSch = require("../Model/ProjectSchema");
+const UserSch=require('../Model/UserSchema')
+
 const verify = require("../verifytoken");
 //shows all the users
 const index = (req, res, next) => {
@@ -40,10 +42,33 @@ const store = (req, res, next) => {
     .save()
     .then((response) => {
       res.json({ projectDetails:project, message: "project added successfully" });
+      UserSch.findByIdAndUpdate(project.teamleaderid,
+        { "$push": { "project": project._id } },
+        { "new": true, "upsert": true },
+        function (err, managerparent) {
+            if (err) throw err;
+            console.log(managerparent);})
+      
+            // const array=[1,2,3]
+            // array.
+            project.teamMembersMail.forEach(memDetails => {
+              UserSch.findOneAndUpdate({email:memDetails.memEmail},
+                { "$push": { "project": project._id } },
+                { "new": true, "upsert": true },
+                function (err, managerparent) {
+                    if (err) console.log(err); 
+                    console.log(managerparent);})
+                    
+            })
+            
+        
     })
     .catch((error) => {
       res.json({ error: { message: "an error occures" } });
     });
+
+      
+ 
 };
 
 //update an user in db

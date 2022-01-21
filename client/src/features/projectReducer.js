@@ -12,9 +12,12 @@ const projectSlice = createSlice({
       state.currentProjects = [payload, ...state.currentProjects];
       localStorage.setItem("projects", JSON.stringify(state.currentProjects));
     },
+    InitialLizeStore: (state, { payload }) => {
+      state.currentProjects = payload;
+    },
   },
 });
 
-export const { AddTocurrentProjects } = projectSlice.actions;
+export const { AddTocurrentProjects, InitialLizeStore } = projectSlice.actions;
 export const selectCurrProjects = (state) => state.projects.currentProjects;
 export default projectSlice.reducer;

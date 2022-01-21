@@ -5,7 +5,7 @@ import "./styles/globalStyles.css";
 
 import { Register, Home, Login, Profile } from "./pages";
 import { Error, CreatePro, Anime } from "./components";
-import CreateProject from "./components/CreateProject";
+// import CreateProject from "./components/CreateProject";
 
 export default function App() {
   return (
@@ -13,7 +13,11 @@ export default function App() {
       <Routes>
         <Route exact path={ROUTES.REGISTER} element={<Register />}></Route>
         <Route exact path={ROUTES.LOGIN} element={<Login />}></Route>
-        <Route exact path={ROUTES.CREATEPROJECT} element={<CreateProject />}></Route>
+        <Route
+          exact
+          path={ROUTES.CREATEPROJECT}
+          element={<CreatePro />}
+        ></Route>
         <Route path={ROUTES.DASH_B} element={<Home />}>
           <Route path="project/:name/:id" element={<Anime />}></Route>
           <Route path="create" element={<CreatePro />} />

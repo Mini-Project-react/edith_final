@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { AddTocurrentProjects } from "../features/projectReducer";
 import axios from "axios";
-import { getProjectApi } from "../helper";
+import { postProjectApi } from "../helper";
 import { useDispatch } from "react-redux";
 import InputText from "./InputText";
 import { Link, useNavigate } from "react-router-dom";
@@ -35,7 +35,7 @@ export default function CreatePro() {
         teamMembersMail: members,
       };
       axios
-        .post(getProjectApi(), createdProject)
+        .post(postProjectApi(), createdProject)
         .then(({ data }) => {
           if (data.error) {
             setError(data.error.message);

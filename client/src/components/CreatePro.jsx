@@ -15,6 +15,7 @@ export default function CreatePro() {
   const [desc, setDesc] = useState("");
   const [head, setHead] = useState("");
   const [error, setError] = useState("");
+  const [mentor, setMentor]=useState("");
 
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
@@ -29,6 +30,7 @@ export default function CreatePro() {
         teamleaderid: user.userId,
         desc: desc,
         head: head,
+        mentor:mentor,
         deadline: dateinput,
         teamMembersMail: members,
       };
@@ -51,8 +53,9 @@ export default function CreatePro() {
     console.log("project stored in db");
   };
   return (
+   
     <div className="">
-      <form className="my-2">
+      <form className="my-2 form">
         <InputText
           type="text"
           contentHead="ProjectName"
@@ -68,7 +71,13 @@ export default function CreatePro() {
           name="head"
           onChange={(e) => setHead(e.target.value)}
         />
-        <InputText type="text" contentHead="studio" placeholder="ufotables" />
+        <InputText 
+        type="text" 
+        contentHead="Mentor"
+         placeholder="mentor mail id"
+         name="mentor"
+         onChange={(e)=>setMentor(e.target.value)}
+         />
         <div className="flex  mb-4">
           <div className="md:pr-4 md:w-1/6 text-center mr-3">
             <label className="font-medium ">Team mates</label>
@@ -203,6 +212,7 @@ export default function CreatePro() {
         </button>
       </form>
     </div>
+ 
   );
 }
 

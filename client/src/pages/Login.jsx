@@ -68,11 +68,11 @@ function Login(props) {
               <p className="inline-flex">remember me</p>
             </label>
 
-            <div className="inputBx">
+            <div className="flex w-full space-x-2 mb-2">
               <input
                 className="rounded-md px-4 py-2  text-white-light transform-gpu transition-all  duration-150 hover:text-gray-800 hover:-translate-y-0.5 flex flex-nowrap w-fit space-x-2 items-center border border-opacity-60"
                 type="submit"
-                value="submit"
+                value="Log in"
                 placeholder="Login"
               />
             </div>

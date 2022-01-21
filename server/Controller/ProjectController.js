@@ -33,6 +33,7 @@ const store = (req, res, next) => {
     teamleaderid: req.body.teamleaderid,
     projectid: req.body.projectid,
     head: req.body.head,
+    mentor: req.body.head,
     desc: req.body.desc,
     teamMembersMail: req.body.teamMembersMail,
     deadline: req.body.deadline,
@@ -41,7 +42,9 @@ const store = (req, res, next) => {
   project
     .save()
     .then((response) => {
+      
       res.json({ projectDetails:project, message: "project added successfully" });
+
       UserSch.findByIdAndUpdate(project.teamleaderid,
         { "$push": { "project": project._id } },
         { "new": true, "upsert": true },

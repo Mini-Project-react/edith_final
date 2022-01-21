@@ -1,16 +1,17 @@
 import { logout } from "../features/userReducer";
 import { useLocation } from "react-router";
 import { Fragment } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import * as ROUTES from "../routes";
 
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { useDispatch } from "react-redux";
 
 export default function NavBar({ user }) {
-  console.log(user);
+  user && console.log("user is here ", user);
   const loc = useLocation();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const navigation = [
     {
       name: "Home",
@@ -39,6 +40,7 @@ export default function NavBar({ user }) {
   }
   const handleSignOut = () => {
     dispatch(logout());
+    navigate("/register");
   };
   return (
     <Disclosure as="nav" className="bg-gray-800">

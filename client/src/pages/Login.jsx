@@ -17,7 +17,7 @@ function Login(props) {
   const dispatch = useDispatch();
   const handleLogin = (e) => {
     e.preventDefault();
-  
+
     if (isNotValid) {
       alert("check the field and try again");
     } else
@@ -28,8 +28,9 @@ function Login(props) {
         })
         .then((res) => {
           if (!res.data.error) {
-            navigate("/");
+            
             dispatch(register(res.data));
+            navigate("/");
           } else setErr(res.data.error.message);
         })
         .catch((err) => console.log(err));

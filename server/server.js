@@ -35,7 +35,7 @@ app.use(bodyparser.json());
 app.use(cors({ exposedHeaders: "auth-token" }));
 app.use("/api/users", authRoute);
 // app.get('/',homepage)
-app.get("/api/users/index", UserController.index);
+app.get("/api/users/index", UserController.getAllUser);
 app.post("/api/users/show", UserController.show);
 app.post("/api/users/store", UserController.store);
 app.post("/api/users/update", UserController.update);

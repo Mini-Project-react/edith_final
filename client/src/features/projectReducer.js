@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  currentProjects: JSON.parse(localStorage.getItem("projects")) || [],
+  currentProjects: [],
 };
 
 const projectSlice = createSlice({
@@ -10,7 +10,6 @@ const projectSlice = createSlice({
   reducers: {
     AddTocurrentProjects: (state, { payload }) => {
       state.currentProjects = [payload, ...state.currentProjects];
-      localStorage.setItem("projects", JSON.stringify(state.currentProjects));
     },
     InitialLizeStore: (state, { payload }) => {
       state.currentProjects = payload;

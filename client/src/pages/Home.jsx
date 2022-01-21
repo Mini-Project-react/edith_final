@@ -15,13 +15,14 @@ import {
   InitialLizeStore,
   selectCurrProjects,
 } from "../features/projectReducer";
-import { getProjectsApi } from "../helper";
+import { getCurrUser, getProjectsApi } from "../helper";
 import { fetchDataFromApi } from "../fetchData";
 import axios from "axios";
+import { Login } from ".";
 
 export default function Home() {
-  let showContent = useLocation().pathname === "/";
   const user = useSelector(selectUser);
+  let showContent = useLocation().pathname === "/";
   const navigate = useNavigate();
   const dispatch = useDispatch();
   useEffect(() => {
@@ -30,7 +31,6 @@ export default function Home() {
       .get(getProjectsApi())
       .then((res) => {
         if (!res.errors) {
-          console.log(res.data);
           dispatch(InitialLizeStore(res.data.response));
           // hav to check for the his project id
           // with the reference from the user-> project details
@@ -39,8 +39,19 @@ export default function Home() {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
-
+      // updateCurrUser();
+      
+  }, [user]);
+  const updateCurrUser = () => {
+    axios
+      .post(getCurrUser(), {
+        userId: user.userId,
+      })
+      .then((res) => {
+        console.log("user updated", res.data.project);
+        dispatch(Login(res.data));
+      });
+  };
   const HomePage = (props) => (
     <main className="h-screen dark">
       <NavBar user={user} />
@@ -49,17 +60,20 @@ export default function Home() {
       </div>
     </main>
   );
+
   return (
     <HomePage>
       <br />
       <br />
-      {showContent && (
+      {showContent && user && (
         <div>
           <HomeTop />
           {/* <Catagories type="projects" />
           <Catagories type="Live" />
         <Catagories type="upcomming" /> */}
-          <Profile />
+          {user.project !== undefined && (
+            <UserProjects userId={user.userId} project={user.project} />
+          )}
         </div>
       )}
       <Outlet />
@@ -75,8 +89,7 @@ const HomeTop = () => {
         <div
           className=" border-none overflow-hidden bg-black absolute"
           onClick={() => {
-            navigateTo(ROUTES.CREATE);
-            console.log("asdf");
+            navigateTo(ROUTES.CREATEPROJECT);
           }}
         >
           {/* <img src={addNew} alt="..." className="shadow rounded max-w-full h-auto align-middle border-none" /> */}
@@ -103,9 +116,9 @@ const HomeTop = () => {
     </div>
   );
 };
-const Profile = () => {
+const UserProjects = ({ project, userId }) => {
   const currProjects = useSelector(selectCurrProjects);
-  console.log(currProjects);
+
   const Project = ({ head }) => (
     <div className="flex flex-col text-gray-800 md:max-w-xs sm:w-full p-4 bg-white-duller shadow-md rounded-md md:ml-2 hover:bg-opacity-10 transform-gpu transition-all hover:shadow-lg duration-150 border border-white-light border-opacity-30">
       <h1 className="font-bold text-xl underline underline-offset-1">{head}</h1>
@@ -120,16 +133,20 @@ const Profile = () => {
   );
   return (
     <div className="flex md:space-x-2 flex-wrap gap-4">
-      {currProjects.length > 0 ? (
-        <>
-          {currProjects.map((pro) => (
-            <Link to={`projects/${pro._id}`} key={pro._id}>
-              <Project head={pro.projectname} key={pro._id} />
-            </Link>
-          ))}
-        </>
+      {project ? (
+        currProjects.length > 0 ? (
+          <>
+            {currProjects
+              .filter((x) => project.includes(x._id))
+              .map((pro) => {
+                return <Project head={pro.projectname} key={pro._id} />;
+              })}
+          </>
+        ) : (
+          <Loader />
+        )
       ) : (
-        <>nothig to show</>
+        <>u dont have any project </>
       )}
     </div>
   );
@@ -165,3 +182,12 @@ const Catagories = ({ type }) => {
     </div>
   );
 };
+
+const Loader = () => (
+  <div className="h-screen w-screen absolute top-0 left-0 bg-black -z-10 bg-opacity-30 text-center text-black flex items-center justify-center">
+    <span
+      className="border-4 border-l-cgray-900 shadow-sm border-opacity-30
+ border-white-dull rounded-full p-4 animate-spin"
+    ></span>
+  </div>
+);

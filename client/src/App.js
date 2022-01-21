@@ -13,14 +13,9 @@ export default function App() {
       <Routes>
         <Route exact path={ROUTES.REGISTER} element={<Register />}></Route>
         <Route exact path={ROUTES.LOGIN} element={<Login />}></Route>
-        <Route
-          exact
-          path={ROUTES.CREATEPROJECT}
-          element={<CreatePro />}
-        ></Route>
         <Route path={ROUTES.DASH_B} element={<Home />}>
           <Route path="project/:name/:id" element={<Anime />}></Route>
-          <Route path="create" element={<CreatePro />} />
+          <Route path={ROUTES.CREATEPROJECT} element={<CreatePro />} />
           <Route path="profile" element={<Profile />} />
           <Route path="*" element={<Error />} />
         </Route>

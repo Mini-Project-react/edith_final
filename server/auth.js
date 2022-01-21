@@ -7,6 +7,8 @@ const bcrypt = require("bcryptjs");
 //register using router
 router.post("/register", async (req, res) => {
   //validating using joi
+  console.log(req.body);
+
   const { error } = registeration(req.body);
   if (error) return res.json({ error: { message: error.details[0].message } });
 
@@ -37,6 +39,7 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
   //validating using joi
   const { error } = login(req.body);
+  console.log(req.body);
   if (error) return res.send({ error: { message: error.details[0].message } });
 
   //checking if the user already exists

@@ -47,7 +47,7 @@ export default function Register(props) {
     console.log("register instance");
   };
   return (
-    <section>
+    <section className="section">
       <div className="box">
         <div className="form">
           <h2>Register</h2>

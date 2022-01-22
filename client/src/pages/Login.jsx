@@ -36,7 +36,7 @@ function Login(props) {
         .catch((err) => console.log(err));
   };
   return (
-    <section>
+    <section className="section">
       <div className="box">
         <div className="form">
           <h2>Login</h2>

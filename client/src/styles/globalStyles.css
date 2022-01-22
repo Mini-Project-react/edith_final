@@ -24,7 +24,7 @@ body {
     /* @apply w-full sm:w-auto flex items-center justify-center text-gray-800 font-medium bg-gray-800 bg-opacity-20 hover:bg-opacity-30 rounded-lg shadow-sm hover:shadow-lg py-3 px-5 border border-white border-opacity-10 transform-gpu hover:-translate-y-0.5  transition-all duration-150; */
 }
 /* login */
-section
+.section
 {
     display: flex;
     justify-content: center;

@@ -41,7 +41,7 @@ app.post("/api/users/store", UserController.store);
 app.post("/api/users/update", UserController.update);
 app.post("/api/users/delete", UserController.destroy);
 app.get("/api/projects", ProjectController.index);
-app.post("/api/projects/show", ProjectController.show);
+app.get("/api/projects/show/:id", ProjectController.show);
 app.post("/api/projects/store", ProjectController.store);
 app.post("/api/projects/update", ProjectController.update);
 app.post("/api/projects/delete", ProjectController.destroy);

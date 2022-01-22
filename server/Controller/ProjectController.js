@@ -18,7 +18,7 @@ const index = (req, res, next) => {
 //shows single user
 const show = (req, res, next) => {
   // req.params.id
-  let userId = res.body.userId;
+  let userId = req.params.id;
   ProjectSch.findById(userId)
     .then((response) => {
       res.json({ response });
@@ -34,7 +34,7 @@ const store = (req, res, next) => {
     teamleaderid: req.body.teamleaderid,
     projectid: req.body.projectid,
     head: req.body.head,
-    mentor: req.body.head,
+    mentor: req.body.mentor,
     desc: req.body.desc,
     teamMembersMail: req.body.teamMembersMail,
     deadline: req.body.deadline,
@@ -54,6 +54,15 @@ const store = (req, res, next) => {
         { new: true, upsert: true },
         function (err, managerparent) {
           if (err) throw err;
+          console.log(managerparent);
+        }
+      );
+      UserSch.findOneAndUpdate(
+        { email: project.mentor }, 
+        { $push: { project: project._id } },
+        { new: true, upsert: true },
+        function (err, managerparent) {
+          if (err) console.log(err);
           console.log(managerparent);
         }
       );

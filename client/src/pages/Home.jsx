@@ -43,7 +43,7 @@ export default function Home() {
       
   }, [user]);
   const updateCurrUser = () => {
-    axios
+    axios 
       .post(getCurrUser(), {
         userId: user.userId,
       })

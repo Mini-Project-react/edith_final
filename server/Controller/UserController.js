@@ -1,5 +1,5 @@
 const UserSch = require("../Model/UserSchema");
-
+const error = (message) => ({ error: { message } });
 //shows all the users
 const getAllUser = (req, res, next) => {
   UserSch.find()
@@ -13,13 +13,14 @@ const getAllUser = (req, res, next) => {
     });
 };
 //shows single user
-const show = (req, res, next) => {
-  UserSch.findById(req.body.userId)
-    .then((response) => {
-      res.json(response);
+const getSingleUser = (req, res, next) => {
+  UserSch.findById(req.params.id)
+    .then(({ name, email, project }) => {
+      res.json({ name, email, project });
     })
-    .catch((error) => {
-      res.json({ message: "an error occures" });
+    .catch((err) => {
+      console.log(err);
+      res.status(400).json({ error: { message: err } });
     });
 };
 //add new user to db
@@ -63,12 +64,12 @@ const update = (req, res, next) => {
 const destroy = (req, res, next) => {
   let userId = req.body.userId;
   UserSch.findByIdAndRemove(userId)
-    .then((response) => {
+    .then(() => {
       res.json({ message: "user deleted successfully" });
     })
     .catch((error) => {
-      res.json({ message: "an error occures" });
+      res.json(error(error.message));
     });
 };
 
-module.exports = { getAllUser, show, store, update, destroy };
+module.exports = { getAllUser, getSingleUser, store, update, destroy };

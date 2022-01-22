@@ -1,12 +1,9 @@
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet, useNavigate, useLocation } from "react-router-dom";
 import * as ROUTES from "../routes";
 import { useFetch } from "../use-fetch";
-import { useLocation } from "react-router-dom";
 
-import NavBar from "../components/Navbar";
-import Mock from "../components/Mock";
-import Projects from "../components/Projects";
-
+import { NavBar, Mock, Projects } from "../components";
+import Login from "./Login";
 import addNew from "./addNew.png";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../features/userReducer";
@@ -16,9 +13,8 @@ import {
   selectCurrProjects,
 } from "../features/projectReducer";
 import { getCurrUser, getProjectsApi } from "../helper";
-import { fetchDataFromApi } from "../fetchData";
 import axios from "axios";
-import { Login } from ".";
+import { updateCurUserDetails, updateCurUserProjects } from "../services";
 
 export default function Home() {
   const user = useSelector(selectUser);
@@ -27,31 +23,26 @@ export default function Home() {
   const dispatch = useDispatch();
   useEffect(() => {
     !user && navigate("/register");
+    // fetchDataFromApi(getCurrUser(user.userId)).then(([data, err]) => {
+    //   dispatch(Login(data.response));
+    // });
+
+    updateCurUserDetails(user.userId, user.project);
     axios
       .get(getProjectsApi())
       .then((res) => {
         if (!res.errors) {
-          dispatch(InitialLizeStore(res.data.response));
-          // hav to check for the his project id
-          // with the reference from the user-> project details
+          dispatch(
+            InitialLizeStore(
+              res.data.response.filter((x) => user.project.includes(x._id))
+            )
+          );
         }
       })
       .catch((err) => {
         console.log(err);
       });
-      // updateCurrUser();
-      
-  }, [user]);
-  const updateCurrUser = () => {
-    axios 
-      .post(getCurrUser(), {
-        userId: user.userId,
-      })
-      .then((res) => {
-        console.log("user updated", res.data.project);
-        dispatch(Login(res.data));
-      });
-  };
+  }, []);
   const HomePage = (props) => (
     <main className="h-screen dark">
       <NavBar user={user} />
@@ -119,54 +110,54 @@ const HomeTop = () => {
 const UserProjects = ({ project, userId }) => {
   const currProjects = useSelector(selectCurrProjects);
 
-  const Project = ({ head }) => (
-    <div className="flex flex-col text-gray-800 md:max-w-xs sm:w-full p-4 bg-white-duller shadow-md rounded-md md:ml-2 hover:bg-opacity-10 transform-gpu transition-all hover:shadow-lg duration-150 border border-white-light border-opacity-30">
-      <h1 className="font-bold text-xl underline underline-offset-1">{head}</h1>
-      <p>
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Distinctio
-        soluta aut quia molestias molestiae odio repudiandae rerum animi,
-        asperiores accusamus facere quaerat explicabo corporis sapiente incidunt
-        quae reprehenderit fugit ipsum. Quos earum placeat incidunt quas dolorem
-        teneturs illum, vitae, accusamus hic doloribus nisi placeat.
-      </p>
-    </div>
+  const Project = (pro) => (
+    <Link to={`/projectdetails/${pro._id}`}>
+      <div className="flex flex-col text-gray-800 md:w-64 h-32 min-w-full p-4 bg-white-duller shadow-md rounded-md md:ml-2 hover:bg-opacity-10 hover:scale-[101%] transform-gpu transition-all hover:shadow-lg hover:w-72 duration-200 border border-white-light border-opacity-30 group overflow-hidden">
+        <div className="flex justify-between whitespace-nowrap">
+          <h1 className="font-bold text-xl underline underline-offset-1 mb-2 ">
+            {pro.projectname}
+          </h1>
+          <div className="flex items-center space-x-1 justify-around translate-x-20 group-hover:translate-x-0 group-hover:opacity-100 transform-gpu duration-300 opacity-0 flex-nowrap">
+            <span className="rounded-full h-2 w-2 bg-green-best bg-opacity-30"></span>
+            <p className="whitespace-nowrap">2 works pending</p>
+          </div>
+        </div>
+        <div className="">
+          <p className="font-medium text-sm">{pro.head}</p>
+        </div>
+      </div>
+    </Link>
   );
+
   return (
-    <div className="flex md:space-x-2 flex-wrap gap-4">
-      {project ? (
-        currProjects.length > 0 ? (
-          <>
-            {currProjects
-              .filter((x) => project.includes(x._id))
-              .map((pro) => {
-                return(
-                  <Link to={`/projectdetails/${pro._id}`}>
-                  <Project head={pro.projectname} key={pro._id} />
-                  </Link>
-                )
-                
-                
-              })}
-          </>
+    <section className="text-cgray-heavy w-full">
+      <h1 className="font-semibold text-xl mb-6">Your Projects</h1>
+      <div className="flex flex-col flex-wrap gap-4 md:flex-row">
+        {project.length > 0 ? (
+          currProjects.length > 0 ? (
+            <>{currProjects.map(Project)}</>
+          ) : (
+            <Loader />
+          )
         ) : (
-          <Loader />
-        )
-      ) : (
-        <>u dont have any project </>
-      )}
-    </div>
+          <>u dont have any project </>
+        )}
+      </div>
+    </section>
   );
 };
-// projectname:"sadf"
-// teamleaderid:"61e59211ab7cc14654d6223d"
-// head:"iubu"
-// desc:"dfvdfs"
-// deadline:"2022-01-13"
-// _id:"61e59c523d1a62f3cd724445"
-// date:"2022-01-17T16:41:54.755Z"
-// createdAt:"2022-01-17T16:41:54.757Z"
-// updatedAt:"2022-01-17T16:41:54.757Z"
-
+// createdAt: "2022-01-21T11:09:35.471Z"
+// date: "2022-01-21T11:09:35.468Z"
+// deadline: "2022-01-31"
+// desc: "Description is the fiction-writing mode for transmitting a mental image of the particulars of a story. Together with dialogue, narration, exposition, and summarization, description is one of the most widely recognized of the fiction-writing modes. As stated in Writing from A to Z, edited by Kirk Polking, description is more than the amassing of details; it is bringing something to life by carefully choosing and arranging words and phrases to produce the desired effect.[6] The most appropriate and effective techniques for presenting description are a matter of ongoing discussion among writers and writing coaches."
+// head: "a mern project"
+// mentor: "mentor@gmail.com"
+// projectname: "project1"
+// teamMembersMail: (3) [{…}, {…}, {…}]
+// teamleaderid: "61ea92e17f8fe01b10578591"
+// updatedAt: "2022-01-21T11:09:35.471Z"
+// __v: 0
+// _id: "61ea946f7f8fe01b105785a7"
 const Catagories = ({ type }) => {
   const { State, loading, error } = useFetch(
     `http://localhost:5000/${type.toLowerCase()}`

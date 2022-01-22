@@ -6,7 +6,6 @@ const verify = require("../verifytoken");
 const index = (req, res, next) => {
   ProjectSch.find({})
     .then((response) => {
-      console.log(response);
       res.json({
         response,
       });
@@ -49,7 +48,7 @@ const store = (req, res, next) => {
       });
 
       UserSch.findOneAndUpdate(
-        {email: project.teamleaderid},
+        { email: project.teamleaderid },
         { $push: { project: project._id } },
         { new: true, upsert: true },
         function (err, managerparent) {
@@ -58,7 +57,7 @@ const store = (req, res, next) => {
         }
       );
       UserSch.findOneAndUpdate(
-        { email: project.mentor }, 
+        { email: project.mentor },
         { $push: { project: project._id } },
         { new: true, upsert: true },
         function (err, managerparent) {
@@ -66,9 +65,6 @@ const store = (req, res, next) => {
           console.log(managerparent);
         }
       );
-
-      // const array=[1,2,3]
-      // array.
       project.teamMembersMail.forEach((memDetails) => {
         UserSch.findOneAndUpdate(
           { email: memDetails.memEmail },

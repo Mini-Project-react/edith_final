@@ -1,15 +1,16 @@
+const base_url = "http://localhost:5000/";
 export function getUserRegisterApi() {
-  return "http://localhost:5000/api/users/register";
+  return base_url + "api/users/register";
 }
 export function getUserLogin() {
-  return "http://localhost:5000/api/users/login";
+  return "api/users/login";
 }
-export function getCurrUser() {
-  return "http://localhost:5000/api/users/show";
+export function getCurrUser(id) {
+  return base_url + "api/users/" + id;
 }
 export function postProjectApi() {
-  return "http://localhost:5000/api/projects/store";
+  return base_url + "api/projects/store";
 }
 export function getProjectsApi() {
-  return "http://localhost:5000/api/projects";
+  return base_url + "api/projects";
 }

@@ -28,7 +28,6 @@ function Login(props) {
         })
         .then((res) => {
           if (!res.data.error) {
-            
             dispatch(register(res.data));
             navigate("/");
           } else setErr(res.data.error.message);

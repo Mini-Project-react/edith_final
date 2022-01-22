@@ -8,7 +8,6 @@ const ProjectController = require("./Controller/ProjectController");
 const authRoute = require("./auth.js");
 const dotenv = require("dotenv");
 const verifytoken = require("./verifytoken");
-const router = require("express").Router();
 
 dotenv.config();
 mongoose.connect(process.env.DB_CONNECT, {
@@ -23,8 +22,7 @@ db.on("error", (err) => {
 });
 db.once("open", () => {
   console.log(" database connection established");
-app.listen(5000);
-
+  app.listen(5000);
 });
 
 const app = express();
@@ -36,7 +34,7 @@ app.use(cors({ exposedHeaders: "auth-token" }));
 app.use("/api/users", authRoute);
 // app.get('/',homepage)
 app.get("/api/users/index", UserController.getAllUser);
-app.post("/api/users/show", UserController.show);
+app.get("/api/users/:id", UserController.getSingleUser);
 app.post("/api/users/store", UserController.store);
 app.post("/api/users/update", UserController.update);
 app.post("/api/users/delete", UserController.destroy);

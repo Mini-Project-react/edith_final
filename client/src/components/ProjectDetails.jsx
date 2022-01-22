@@ -5,10 +5,13 @@ import Mentor from "../components/Mentor";
 import Team from "../components/Team";
 import Altuser from "./Altuser.png";
 import { useContext, useEffect, useState } from "react";
+import {  useSelector } from "react-redux";
+import { selectUser } from "../features/userReducer";
 function ProjectDetails() {
     const [data, setData] = useState({});
     const [isloading, setisloading] = useState(true);
     const { id } = useParams();
+    const user = useSelector(selectUser);
     useEffect(() => {
         fetch_data();
       }, []);
@@ -84,8 +87,8 @@ max-w-12xl
   
 "> {data.head}</h1>
           <p className="mx-auto text-base leading-relaxed text-gray-500"> {data.desc} </p>
-          <p>{data.mentor}</p>
-          {data.teamMembersMail.map((teamMembersMail)=>(<p>{teamMembersMail.memEmail}</p>))}
+          <p>Menor: {data.mentor}</p>
+     
         </div>
       </div>
     </div>
@@ -99,7 +102,14 @@ max-w-12xl
                 {data.teamMembersMail.map((teamMembersMail)=>(
                    <div  className="flex flex-col w-full max-w-lg p-8 text-left shadow-2xl lg:mx-auto rounded-xl" draggable="true">
                        <h2  className="mt-4 text-xs font-semibold tracking-widest text-blue-500 " draggable="true">
-                           <span>{teamMembersMail.memEmail}</span>
+                           
+                           
+                          {(user.email===teamMembersMail.memEmail)?(
+                            <span> {data.teamleaderid}</span>
+                          ):
+                           (<span>{teamMembersMail.memEmail}</span>)}
+                           
+                           
                               <span  href="#" className="font-semibold text-gray-200 lg:mb-0" draggable="true">
                                 <br></br><span>Acme's HR</span>
                               </span>
@@ -113,9 +123,9 @@ max-w-12xl
           </div>
         </div>
       </div>
-    <Mentor/>
-
-    <Team/>
+      
+   {(user.email===data.mentor)?(<Mentor/>):(  <Team/>)} 
+  
   </section>
   ):(
     <div>not loading</div>

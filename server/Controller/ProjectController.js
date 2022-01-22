@@ -48,8 +48,8 @@ const store = (req, res, next) => {
         message: "project added successfully",
       });
 
-      UserSch.findByIdAndUpdate(
-        project.teamleaderid,
+      UserSch.findOneAndUpdate(
+        {email: project.teamleaderid},
         { $push: { project: project._id } },
         { new: true, upsert: true },
         function (err, managerparent) {

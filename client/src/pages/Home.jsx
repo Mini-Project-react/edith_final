@@ -139,7 +139,13 @@ const UserProjects = ({ project, userId }) => {
             {currProjects
               .filter((x) => project.includes(x._id))
               .map((pro) => {
-                return <Project head={pro.projectname} key={pro._id} />;
+                return(
+                  <Link to={`/projectdetails/${pro._id}`}>
+                  <Project head={pro.projectname} key={pro._id} />
+                  </Link>
+                )
+                
+                
               })}
           </>
         ) : (

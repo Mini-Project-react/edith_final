@@ -27,7 +27,7 @@ export default function CreatePro() {
     if (!isInValid) {
       const createdProject = {
         projectname: projectname,
-        teamleaderid: user.userId,
+        teamleaderid: user.email,
         desc: desc,
         head: head,
         mentor:mentor,

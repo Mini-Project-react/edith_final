@@ -113,8 +113,9 @@ export default function NavBar({ user }) {
                     <div>
                       <Menu.Button className="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
                         <span className="sr-only">Open user menu</span>
+                        {/*
                         <div className="h-8 w-8 rounded-full overflow-hidden">
-                          <img
+                           <img
                             className="object-cover h-full"
                             // replace the user img
                             src={
@@ -122,7 +123,10 @@ export default function NavBar({ user }) {
                             }
                             alt=""
                           />
+                          
                         </div>
+                           */}
+                        <MockIcon />
                       </Menu.Button>
                     </div>
                     <Transition
@@ -216,3 +220,31 @@ export default function NavBar({ user }) {
     </Disclosure>
   );
 }
+const MockIcon = () => (
+  <div
+    className="inline-flex items-center
+justify-center flex-shrink-0 w-9 h-9
+text-blue-600 rounded-full  bg-blue-50"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className="w-6 h-6 icon icon-tabler icon-tabler-aperture"
+      width={24}
+      height={24}
+      viewBox="0 0 24 24"
+      strokeWidth="1.5"
+      stroke="currentColor"
+      fill="none"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <circle cx={12} cy={12} r={9} />
+      <line x1="3.6" y1={15} x2="14.15" y2={15} />
+      <line x1="3.6" y1={15} x2="14.15" y2={15} transform="rotate(72 12 12)" />
+      <line x1="3.6" y1={15} x2="14.15" y2={15} transform="rotate(144 12 12)" />
+      <line x1="3.6" y1={15} x2="14.15" y2={15} transform="rotate(216 12 12)" />
+      <line x1="3.6" y1={15} x2="14.15" y2={15} transform="rotate(288 12 12)" />
+    </svg>
+  </div>
+);

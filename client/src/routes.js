@@ -6,5 +6,6 @@ export const HOME = "/home";
 export const PROFILE = "/Profile";
 export const CREATE = "/create";
 export const TEAM = "/team";
+export const JOIN = "/join";
 export const PROJECT = "/project";
 export const CALENDER = "/calender";

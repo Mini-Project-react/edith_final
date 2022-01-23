@@ -2,46 +2,21 @@ import { Link, Outlet, useNavigate, useLocation } from "react-router-dom";
 import * as ROUTES from "../routes";
 import { useFetch } from "../use-fetch";
 
-import { NavBar, Mock, Projects } from "../components";
-import Login from "./Login";
+import { NavBar, Mock, Projects, Loader } from "../components";
 import addNew from "./addNew.png";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { selectUser } from "../features/userReducer";
 import { useEffect } from "react";
-import {
-  InitialLizeStore,
-  selectCurrProjects,
-} from "../features/projectReducer";
-import { getCurrUser, getProjectsApi } from "../helper";
-import axios from "axios";
-import { updateCurUserDetails, updateCurUserProjects } from "../services";
+import { selectCurrProjects } from "../features/projectReducer";
+import { updateCurUserDetails } from "../services";
 
 export default function Home() {
   const user = useSelector(selectUser);
   let showContent = useLocation().pathname === "/";
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   useEffect(() => {
     !user && navigate("/register");
-    // fetchDataFromApi(getCurrUser(user.userId)).then(([data, err]) => {
-    //   dispatch(Login(data.response));
-    // });
-
     updateCurUserDetails(user.userId, user.project);
-    axios
-      .get(getProjectsApi())
-      .then((res) => {
-        if (!res.errors) {
-          dispatch(
-            InitialLizeStore(
-              res.data.response.filter((x) => user.project.includes(x._id))
-            )
-          );
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
   }, []);
   const HomePage = (props) => (
     <main className="h-screen dark">
@@ -83,8 +58,6 @@ const HomeTop = () => {
             navigateTo(ROUTES.CREATEPROJECT);
           }}
         >
-          {/* <img src={addNew} alt="..." className="shadow rounded max-w-full h-auto align-middle border-none" /> */}
-          {/* change the image i added just for the scale ++ -mt-16 for going bottom without margin it show the top part*/}
           <img
             src={addNew}
             alt="..."
@@ -100,7 +73,7 @@ const HomeTop = () => {
           create <strong className="text-sm ">{"{your}"}</strong> own procject,
           or maybe{" "}
         </p>
-        <Link to={"/create"} className="text-xs text-red-700 italic font-bold">
+        <Link to={ROUTES.JOIN} className="text-xs text-red-700 italic font-bold">
           join
         </Link>
       </div>
@@ -112,7 +85,7 @@ const UserProjects = ({ project, userId }) => {
 
   const Project = (pro) => (
     <Link to={`/projectdetails/${pro._id}`}>
-      <div className="flex flex-col text-gray-800 md:w-64 h-32 min-w-full p-4 bg-white-duller shadow-md rounded-md md:ml-2 hover:bg-opacity-10 hover:scale-[101%] transform-gpu transition-all hover:shadow-lg hover:w-72 duration-200 border border-white-light border-opacity-30 group overflow-hidden">
+      <div className="flex flex-col text-gray-800 md:w-64 h-32 min-w-full p-4 bg-white-duller shadow-md rounded-md md:ml-2 hover:bg-opacity-10 hover:scale-[101%] transform-gpu transition-all hover:shadow-lg hover:w-72 duration-200 border border-white-light group overflow-hidden hover:border-gray-800 hover:border-opacity-20 border-opacity-5">
         <div className="flex justify-between whitespace-nowrap">
           <h1 className="font-bold text-xl underline underline-offset-1 mb-2 ">
             {pro.projectname}
@@ -132,15 +105,36 @@ const UserProjects = ({ project, userId }) => {
   return (
     <section className="text-cgray-heavy w-full">
       <h1 className="font-semibold text-xl mb-6">Your Projects</h1>
-      <div className="flex flex-col flex-wrap gap-4 md:flex-row">
+      <div className="flex flex-col flex-wrap gap-4 lg:flex-row">
         {project.length > 0 ? (
           currProjects.length > 0 ? (
-            <>{currProjects.map(Project)}</>
+            currProjects.map(Project)
           ) : (
             <Loader />
           )
         ) : (
-          <>u dont have any project </>
+          <span className="w-full text-center border-2 border-dotted rounded-md flex flex-col items-center justify-center py-8 text-gray-800 text-opacity-70">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" />
+              <path
+                stroke="#fff"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M8 11h4m-2-2v4"
+              />
+            </svg>
+            <p className="font-medium text-xs">
+              u dont have any project <strong>yet</strong>
+              <br />
+              Time to create one
+            </p>
+          </span>
         )}
       </div>
     </section>
@@ -149,7 +143,7 @@ const UserProjects = ({ project, userId }) => {
 // createdAt: "2022-01-21T11:09:35.471Z"
 // date: "2022-01-21T11:09:35.468Z"
 // deadline: "2022-01-31"
-// desc: "Description is the fiction-writing mode for transmitting a mental image of the particulars of a story. Together with dialogue, narration, exposition, and summarization, description is one of the most widely recognized of the fiction-writing modes. As stated in Writing from A to Z, edited by Kirk Polking, description is more than the amassing of details; it is bringing something to life by carefully choosing and arranging words and phrases to produce the desired effect.[6] The most appropriate and effective techniques for presenting description are a matter of ongoing discussion among writers and writing coaches."
+// desc: "Description...
 // head: "a mern project"
 // mentor: "mentor@gmail.com"
 // projectname: "project1"
@@ -158,33 +152,25 @@ const UserProjects = ({ project, userId }) => {
 // updatedAt: "2022-01-21T11:09:35.471Z"
 // __v: 0
 // _id: "61ea946f7f8fe01b105785a7"
-const Catagories = ({ type }) => {
-  const { State, loading, error } = useFetch(
-    `http://localhost:5000/${type.toLowerCase()}`
-  );
-  return (
-    <div className="overflow-x-hidden w-full">
-      <h1 className="text-2xl font-semibold text-gray-900 text-opacity-90 my-4">
-        {type}
-      </h1>
-      {loading ? (
-        <Mock limit={[0, 1, 2, 3]} />
-      ) : (
-        <Projects
-          data={{ feed: State, type }}
-          // refLink={ROUTES.Live_fet}
-          isLoading={true}
-        />
-      )}
-    </div>
-  );
-};
 
-const Loader = () => (
-  <div className="h-screen w-screen absolute top-0 left-0 bg-black -z-10 bg-opacity-30 text-center text-black flex items-center justify-center">
-    <span
-      className="border-4 border-l-cgray-900 shadow-sm border-opacity-30
- border-white-dull rounded-full p-4 animate-spin"
-    ></span>
-  </div>
-);
+// const Catagories = ({ type }) => {
+//   const { State, loading, error } = useFetch(
+//     `http://localhost:5000/${type.toLowerCase()}`
+//   );
+//   return (
+//     <div className="overflow-x-hidden w-full">
+//       <h1 className="text-2xl font-semibold text-gray-900 text-opacity-90 my-4">
+//         {type}
+//       </h1>
+//       {loading ? (
+//         <Mock limit={[0, 1, 2, 3]} />
+//       ) : (
+//         <Projects
+//           data={{ feed: State, type }}
+//           // refLink={ROUTES.Live_fet}
+//           isLoading={true}
+//         />
+//       )}
+//     </div>
+//   );
+// };

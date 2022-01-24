@@ -3,7 +3,7 @@ export function getUserRegisterApi() {
   return base_url + "api/users/register";
 }
 export function getUserLogin() {
-  return "api/users/login";
+  return base_url+"api/users/login";
 }
 export function getCurrUser(id) {
   return base_url + "api/users/" + id;

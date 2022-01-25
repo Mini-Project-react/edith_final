@@ -11,6 +11,7 @@ export function useFetch(url) {
         setError(error);
       } else {
         setState(response);
+        console.log(response);
         setloading(false);
       }
     });

@@ -16,12 +16,14 @@ const projectSchema = new mongoose.Schema(
     mentor: { type: String },
     desc: { type: String },
     teamMembersMail: { type: Array, default: [] },
+    task:{type:Array,},
     deadline: { type: String },
     date: {
       type: Date,
       default: Date.now,
     },
   },
+ 
   { timestamps: true }
 );
 

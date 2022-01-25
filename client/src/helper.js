@@ -14,3 +14,9 @@ export function postProjectApi() {
 export function getProjectsApi() {
   return base_url + "api/projects";
 }
+export function postTaskApi() {
+  return base_url + "api/tasks/store";
+}
+export function getTaskApi(id) {
+  return base_url + "api/tasks/show/"+id;
+}

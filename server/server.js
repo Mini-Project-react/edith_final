@@ -5,6 +5,7 @@ const cors = require("cors");
 const bodyparser = require("body-parser");
 const UserController = require("./Controller/UserController");
 const ProjectController = require("./Controller/ProjectController");
+const TaskController = require("./Controller/TaskController");
 const authRoute = require("./auth.js");
 const dotenv = require("dotenv");
 const verifytoken = require("./verifytoken");
@@ -43,7 +44,8 @@ app.get("/api/projects/show/:id", ProjectController.show);
 app.post("/api/projects/store", ProjectController.store);
 app.post("/api/projects/update", ProjectController.update);
 app.post("/api/projects/delete", ProjectController.destroy);
-
+app.post("/api/tasks/store",TaskController.store);
+app.get("/api/tasks/show/:id",TaskController.show)
 app.get("/api/auth/post", verifytoken, (req, res) => {
   res.json({
     exclusive: "yes it is ",

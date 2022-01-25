@@ -1,14 +1,49 @@
 import React from "react";
 import { useState } from "react";
-
-function Mentor() {
+import { postTaskApi } from "../helper";
+import axios from "axios";
+function Mentor(props) {
   const [showModal, setShowModal] = React.useState(false);
   const [form, showform] = useState(false);
+  //task-form details
+  const [taskname, settaskname] = useState("");
+  const [dateinput, setDateinput] = useState("2021-10-06");
+  const [desc, setDesc] = useState("");
+  const [error, setError] = useState("");
+  let isInValid = !taskname || !desc;
+  const handleForm = async (e) => {
+    e.preventDefault();
+   showform(false);
+    if (!isInValid) {
+      const createtask = {
+        taskname:taskname,
+        desc:desc,
+        deadline:dateinput,
+       projectid:props.projectid
+      };
+      axios
+      .post(postTaskApi(), createtask)
+      .then(({ data }) => {
+        if (data.error) {
+          setError(data.error.message);
+         }//else {
+        //   // dispatch(AddTocurrentProjects(data.projectDetails));
+        //   navigate("/profile");
+        // }
+      })
+      .catch((err) => {
+        setError(err.message);
+      });
+  } else {
+    alert("check the fields");
+  }
+  console.log("project stored in db");
+};
   return (
     <div>
       <div className="container mx-auto max-w-[80%] flex flex-col space-y-4 justify-center items-center">
         {form ? (
-          <form className="w-full max-w-2xl p-5 shadow-2xl flex flex-col items-center ">
+          <form className="w-full max-w-2xl p-5 shadow-2xl flex flex-col items-center " >
             <div className="md:flex md:items-center mb-6">
               <div className="md:w-1/3">
                 <label
@@ -24,6 +59,7 @@ function Mentor() {
                   id="inline-full-name"
                   type="text"
                   placeholder="ADD CSS"
+                  onChange={(e) => settaskname(e.target.value)}
                 />
               </div>
             </div>
@@ -37,7 +73,11 @@ function Mentor() {
                 </label>
               </div>
               <div className="md:w-2/3">
-                <textarea className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"></textarea>
+                <textarea className="bg-gray-200 appearance-none border-2 
+                border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight
+                 focus:outline-none focus:bg-white focus:border-purple-500"
+                 onChange={(e) => setDesc(e.target.value)}
+                 ></textarea>
               </div>
             </div>
             <div className="md:flex md:items-center mb-6">
@@ -54,15 +94,18 @@ function Mentor() {
                   className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
                   id="inline-full-name"
                   type="date"
+                  onChange={(e) => setDateinput(e.target.value)}
                 />
               </div>
             </div>
             <div className="md:flex md:items-center">
               <div className=" flex m-2 p-2">
                 <div>
+                <p className="font-medium underline">{error}</p>
                   <button
                     className="shadow m-2 bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
                     type="button"
+                    onClick={handleForm}
                   >
                     Assign Task
                   </button>

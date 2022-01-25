@@ -70,7 +70,7 @@ function Team(props) {
                     </div>
                   </td>
                   <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                    <p className="text-gray-900 whitespace-no-wrap">{task.date}</p>
+                    <p className="text-gray-900 whitespace-no-wrap">{task.date.substring(0,10)}</p>
                   </td>
                   <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                     <p className="text-gray-900 whitespace-no-wrap">
@@ -98,7 +98,7 @@ function Team(props) {
                     </div>
                   </td>
                 </tr>
-                ))})
+                ))}
            
 
               </tbody>):(<div>Loading ......</div>)}

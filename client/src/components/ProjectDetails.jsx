@@ -189,7 +189,11 @@ export default function ProjectDetails() {
           </div>
         </div>
 
-        {user.email === State.mentor ? <Mentor projectid={id}/> : <Team projectid={id} />}
+        {user.email === State.mentor ? (
+          <Mentor projectid={id} />
+        ) : (
+          <Team projectid={id} />
+        )}
       </section>
     ) : (
       <Loader />

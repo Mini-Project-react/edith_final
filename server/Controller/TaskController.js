@@ -1,11 +1,7 @@
 const TaskSch = require("../Model/TaskSchema");
 const error = (message) => ({ error: { message } });
 const store = (req, res, next) => {
-    var date = new Date(dateStr);  // dateStr you get from mongodb
 
-    var d = date.getDate();
-    var m = date.getMonth()+1;
-    var y=date.getFullYear();
     let task = new TaskSch({
       taskname: req.body.taskname,
       desc:req.body.desc,
@@ -37,4 +33,25 @@ const store = (req, res, next) => {
         res.json({ message: "an error occures" });
       });
   };
-  module.exports = { store,show };
+
+  const upload = (req, res, next) => {
+  
+    let updateData = {
+      link: req.body.link,
+      file: req.body.file,
+      user: req.body.teammember,
+      taskid: req.body.taskid,
+      date: req.body.date,
+      time:req.body.time
+    };
+    TaskSch.findOneAndUpdate(
+      { _id:updateData.taskid},
+      { $push: { Submissions:updateData } },
+      { new: true, upsert: true },
+      function (err, managerparent) {
+        if (err) throw err;
+        console.log(managerparent);
+      }
+    );
+  };
+  module.exports = { store,show,upload };

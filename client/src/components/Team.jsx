@@ -1,12 +1,62 @@
 
 import React from 'react';
 import { useFetch } from '../use-fetch';
+import { useState } from "react";
 import Upload from './upload.png'
 import { getTaskApi } from '../helper';
+import { postFilesApi } from '../helper';
+import axios from "axios";
+import { useSelector } from "react-redux";
+import { selectUser } from "../features/userReducer";
+
 function Team(props) {
-  const [showModal, setShowModal] = React.useState(false);
-  const { State, loading, error } = useFetch(getTaskApi(props.projectid));
-  if (!loading) {
+  const user = useSelector(selectUser);
+  const [showModal, setShowModal] = React.useState("");
+  const [error, setError] = useState("");
+  const { State, loading } = useFetch(getTaskApi(props.projectid));
+  const [link, setLink] = useState("");
+  const [taskid,setTaskid]=useState("")
+
+  let isInValid = !link;
+  const handleForm = async (e) => {
+    e.preventDefault();
+    let ts = Date.now();
+
+    let date_ob = new Date(ts);
+    let date = date_ob.getDate();
+    let month = date_ob.getMonth() + 1;
+    let year = date_ob.getFullYear();
+    let hrs=date_ob.getHours();
+    let min=date_ob.getMinutes();
+    
+    if (!isInValid) {
+      const upload = {
+        link:link,
+         taskid:showModal._id,
+        teammember:user.email,
+        date:year + "-" + month + "-" + date ,
+        time: hrs +":"+min
+      };
+      axios
+      .post(postFilesApi(), upload)
+      .then(({ data }) => {
+        if (data.error) {
+          setError(data.error.message);
+         }//else {
+        //   // dispatch(AddTocurrentProjects(data.projectDetails));
+        //   navigate("/profile");
+        // }
+      })
+      .catch((err) => {
+        setError(err.message);
+      });
+  } else {
+    alert("check the fields");
+  }
+  setShowModal("");
+  console.log("project stored in db");
+};
+  if (!loading) { 
     console.log(State.Name);
   }
   return (
@@ -56,13 +106,13 @@ function Team(props) {
 
               {(!loading )? (<tbody>
                 {State.map((task) => (
-
+        
                 <tr>
                   <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                     <div className="flex items-center">
                       <div className="ml-3">
                         <p className="text-gray-900 whitespace-no-wrap">
-                          {task.name}  </p>
+                          {task.taskname}  </p>
                           <p className="text-gray-500 whitespace-no-wrap">
                             {task.desc}
                           </p>
@@ -88,7 +138,8 @@ function Team(props) {
                     >
                       <img
                         className="object-cover  h-fit"
-                        onClick={() => setShowModal(true)}
+                        onClick={() => setShowModal(task)}
+                       
                         src={
                           Upload
                         }
@@ -123,6 +174,7 @@ function Team(props) {
       </div>
       {showModal ? (
         <div>
+        
           <div
             className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
           >
@@ -130,33 +182,27 @@ function Team(props) {
               {/*content*/}
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full   bg-white-light outline-none focus:outline-none">
                 {/*header*/}
-                <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
-                  <h3 className="text-3xl font-semibold">
-                    Upload
-                  </h3>
-                  <button
-                    className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-                    onClick={() => setShowModal(false)}
-                  >
-                    <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
-                      ×
-                    </span>
-                  </button>
-                </div>
-                <div className="sm:max-w-lg w-full p-10 bg-white rounded-xl z-10">
+                
+               
+                <div className="sm:max-w-lg w-full pt-5 px-12 bg-white rounded-xl z-10">
+                
                   <div className="text-center">
+                  <button
+                    className="p-2 ml-auto  bg-red-500 border-0  rounded-full  text-white-duller float-right text-lg leading-none font-semibold outline-none focus:outline-none"
+                    onClick={() => setShowModal("")}
+                  >
+                    X
+                  </button>
                     <h2 className="mt-5 text-3xl font-bold text-gray-900">
-                      File Upload!
+                      File Upload!<br></br>
+                      {showModal.taskname}
                     </h2>
                   </div>
                   <form className="mt-8 space-y-3" action="#" method="POST">
-                    <div className="grid grid-cols-1 space-y-2">
-                      <label className="text-sm font-bold text-gray-500 tracking-wide">Title</label>
-                      <input className="text-base p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500" type placeholder="mail@gmail.com" />
-                    </div>
+                    
                     <div className="grid grid-cols-1 space-y-2">
                       <label className="text-sm font-bold text-gray-500 tracking-wide">Link</label>
-                      <input className="text-base p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500" type placeholder="mail@gmail.com" />
+                      <input className="text-base p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500" type placeholder="mail@gmail.com" onChange={(e) => setLink(e.target.value)} />
                     </div>
                     <div className="grid grid-cols-1 space-y-2">
                       <label className="text-sm font-bold text-gray-500 tracking-wide">Attach Document</label>
@@ -167,7 +213,7 @@ function Team(props) {
 
                             <p className="pointer-none text-gray-500 "><span className="text-sm">Drag and drop</span> files here <br /> or <a href id className="text-blue-600 hover:underline">select a file</a> from your computer</p>
                           </div>
-                          <input type="file" className="hidden" />
+                          <input type="file" className="hidden"  />
                         </label>
                       </div>
                     </div>
@@ -176,14 +222,15 @@ function Team(props) {
                     </p>
                     <div>
                       <button type="submit" className="my-5 w-full flex justify-center bg-blue-500 text-gray-100 p-4  rounded-full tracking-wide
-                                              font-semibold  focus:outline-none focus:shadow-outline hover:bg-blue-600 shadow-lg cursor-pointer transition ease-in duration-300">
+                                              font-semibold  focus:outline-none focus:shadow-outline hover:bg-blue-600 shadow-lg cursor-pointer transition ease-in duration-300"
+                                              onClick={handleForm}
+                                              >
                         Upload
                       </button>
-                      <button
-                        className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                        type="button"
-                        onClick={() => setShowModal(false)}
-                      >
+                      <button type="submit" className="my-5 w-full flex justify-center bg-blue-500 text-gray-100 p-4  rounded-full tracking-wide
+                                              font-semibold  focus:outline-none focus:shadow-outline hover:bg-blue-600 shadow-lg cursor-pointer transition ease-in duration-300"
+                                              
+                                              onClick={() => setShowModal("")}>
                         Close
                       </button>
                     </div>

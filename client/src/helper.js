@@ -20,3 +20,6 @@ export function postTaskApi() {
 export function getTaskApi(id) {
   return base_url + "api/tasks/show/"+id;
 }
+export function postFilesApi(id) {
+  return base_url + "api/tasks/upload";
+}

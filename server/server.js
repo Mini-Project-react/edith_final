@@ -45,6 +45,7 @@ app.post("/api/projects/store", ProjectController.store);
 app.post("/api/projects/update", ProjectController.update);
 app.post("/api/projects/delete", ProjectController.destroy);
 app.post("/api/tasks/store",TaskController.store);
+app.post("/api/tasks/upload",TaskController.upload);
 app.get("/api/tasks/show/:id",TaskController.show)
 app.get("/api/auth/post", verifytoken, (req, res) => {
   res.json({

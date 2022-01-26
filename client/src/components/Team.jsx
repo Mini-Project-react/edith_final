@@ -17,9 +17,61 @@ function Team(props) {
   const [link, setLink] = useState("");
   const [taskid,setTaskid]=useState("")
 
+
+  const [file, setFile] = useState('');
+  const [filename, setFilename] = useState('Choose File');
+  const [uploadedFile, setUploadedFile] = useState({});
+  const [message, setMessage] = useState('');
+  const [uploadPercentage, setUploadPercentage] = useState(0);
   let isInValid = !link;
+
+  const onChange = e => {
+    setFile(e.target.files[0]);
+    setFilename(e.target.files[0].name);
+  };
+
+
   const handleForm = async (e) => {
+
     e.preventDefault();
+
+
+
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const res = await axios.post(postFilesApi(), formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        },
+        onUploadProgress: progressEvent => {
+          setUploadPercentage(
+            parseInt(
+              Math.round((progressEvent.loaded * 100) / progressEvent.total)
+            )
+          );
+        }
+      });
+      
+      // Clear percentage
+      setTimeout(() => setUploadPercentage(0), 10000);
+
+      const { fileName, filePath } = res.data;
+
+      setUploadedFile({ fileName, filePath });
+
+      setMessage('File Uploaded');
+    } catch (err) {
+      if (err.response.status === 500) {
+        setMessage('There was a problem with the server');
+      } else {
+        setMessage(err.response.data.msg);
+      }
+      setUploadPercentage(0)
+    }
+
     let ts = Date.now();
 
     let date_ob = new Date(ts);
@@ -35,7 +87,8 @@ function Team(props) {
          taskid:showModal._id,
         teammember:user.email,
         date:year + "-" + month + "-" + date ,
-        time: hrs +":"+min
+        time: hrs +":"+min,
+        filename:filename
       };
       axios
       .post(postFilesApi(), upload)
@@ -198,22 +251,19 @@ function Team(props) {
                       {showModal.taskname}
                     </h2>
                   </div>
-                  <form className="mt-8 space-y-3" action="#" method="POST">
+                  <form className="mt-8 space-y-3" action="#" method="POST" enctype="multipart/form-data">
                     
                     <div className="grid grid-cols-1 space-y-2">
                       <label className="text-sm font-bold text-gray-500 tracking-wide">Link</label>
-                      <input className="text-base p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500" type placeholder="mail@gmail.com" onChange={(e) => setLink(e.target.value)} />
+                      <input className="text-base p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500" type placeholder="mail@gmail.com"
+                       onChange={(e) => setLink(e.target.value)} />
                     </div>
                     <div className="grid grid-cols-1 space-y-2">
                       <label className="text-sm font-bold text-gray-500 tracking-wide">Attach Document</label>
                       <div className="flex items-center justify-center w-full">
                         <label className="flex flex-col rounded-lg border-4 border-dashed w-full h-40 p-10 group text-center">
-                          <div className="h-full w-full text-center flex flex-col items-center justify-center items-center  ">
-
-
-                            <p className="pointer-none text-gray-500 "><span className="text-sm">Drag and drop</span> files here <br /> or <a href id className="text-blue-600 hover:underline">select a file</a> from your computer</p>
-                          </div>
-                          <input type="file" className="hidden"  />
+                          
+                          <input type="file"     onChange={onChange}/>
                         </label>
                       </div>
                     </div>

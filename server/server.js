@@ -7,9 +7,10 @@ const UserController = require("./Controller/UserController");
 const ProjectController = require("./Controller/ProjectController");
 const TaskController = require("./Controller/TaskController");
 const authRoute = require("./auth.js");
+
 const dotenv = require("dotenv");
 const verifytoken = require("./verifytoken");
-
+const fileUpload = require('express-fileupload');
 dotenv.config();
 mongoose.connect(process.env.DB_CONNECT, {
   useNewUrlParser: true,
@@ -28,6 +29,9 @@ db.once("open", () => {
 
 const app = express();
 // middleWares
+
+app.use(fileUpload());
+
 app.use(morgan("dev"));
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(bodyparser.json());
@@ -52,3 +56,4 @@ app.get("/api/auth/post", verifytoken, (req, res) => {
     exclusive: "yes it is ",
   });
 });
+ 

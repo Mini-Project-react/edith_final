@@ -38,12 +38,26 @@ const store = (req, res, next) => {
   
     let updateData = {
       link: req.body.link,
-      file: req.body.file,
+      file: req.body.filename,
       user: req.body.teammember,
       taskid: req.body.taskid,
       date: req.body.date,
       time:req.body.time
     };
+    if(req.files){
+      const file = req.files.file;
+
+      file.mv(`D:/EDITH/edith_final/client/public/uploads/${file.name}`, err => {
+        if (err) {
+          console.error(err);
+          return res.status(500).send(err);
+        }
+    
+        res.json({ fileName: file.name, filePath: `/uploads/${file.name}` });
+      });
+    
+    
+  }
     TaskSch.findOneAndUpdate(
       { _id:updateData.taskid},
       { $push: { Submissions:updateData } },

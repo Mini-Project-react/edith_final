@@ -1,10 +1,9 @@
-
-import React from 'react';
-import { useFetch } from '../use-fetch';
+import React from "react";
+import { useFetch } from "../use-fetch";
 import { useState } from "react";
-import Upload from './upload.png'
-import { getTaskApi } from '../helper';
-import { postFilesApi } from '../helper';
+import Upload from "./upload.png";
+import { getTaskApi } from "../helper";
+import { postFilesApi } from "../helper";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { selectUser } from "../features/userReducer";
@@ -16,46 +15,38 @@ function Team(props) {
   const { State, loading } = useFetch(getTaskApi(props.projectid));
   const [link, setLink] = useState("");
 
-
-
-  const [file, setFile] = useState('');
-  const [filename, setFilename] = useState('Choose File');
+  const [file, setFile] = useState("");
+  const [filename, setFilename] = useState("Choose File");
   const [uploadedFile, setUploadedFile] = useState({});
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
   const [uploadPercentage, setUploadPercentage] = useState(0);
   let isInValid = !link;
 
-  const onChange = e => {
+  const onChange = (e) => {
     setFile(e.target.files[0]);
     setFilename(e.target.files[0].name);
-    
   };
 
-
   const handleForm = async (e) => {
-
     e.preventDefault();
 
-    
-
-
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append("file", file);
 
     try {
       const res = await axios.post(postFilesApi(), formData, {
         headers: {
-          'Content-Type': 'multipart/form-data'
+          "Content-Type": "multipart/form-data",
         },
-        onUploadProgress: progressEvent => {
+        onUploadProgress: (progressEvent) => {
           setUploadPercentage(
             parseInt(
               Math.round((progressEvent.loaded * 100) / progressEvent.total)
             )
           );
-        }
+        },
       });
-      
+
       // Clear percentage
       setTimeout(() => setUploadPercentage(0), 10000);
 
@@ -63,14 +54,14 @@ function Team(props) {
 
       setUploadedFile({ fileName, filePath });
 
-      setMessage('File Uploaded');
+      setMessage("File Uploaded");
     } catch (err) {
       if (err.response.status === 500) {
-        setMessage('There was a problem with the server');
+        setMessage("There was a problem with the server");
       } else {
         setMessage(err.response.data.msg);
       }
-      setUploadPercentage(0)
+      setUploadPercentage(0);
     }
 
     let ts = Date.now();
@@ -79,39 +70,39 @@ function Team(props) {
     let date = date_ob.getDate();
     let month = date_ob.getMonth() + 1;
     let year = date_ob.getFullYear();
-    let hrs=date_ob.getHours();
-    let min=date_ob.getMinutes();
-    
+    let hrs = date_ob.getHours();
+    let min = date_ob.getMinutes();
+
     if (!isInValid) {
       const upload = {
-        link:link,
-         taskid:showModal._id,
-        teammember:user.email,
-        date:year + "-" + month + "-" + date ,
-        time: hrs +":"+min,
-        filename:filename
+        link: link,
+        taskid: showModal._id,
+        teammember: user.email,
+        date: year + "-" + month + "-" + date,
+        time: hrs + ":" + min,
+        filename: filename,
       };
       axios
-      .post(postFilesApi(), upload)
-      .then(({ data }) => {
-        if (data.error) {
-          setError(data.error.message);
-         }//else {
-        //   // dispatch(AddTocurrentProjects(data.projectDetails));
-        //   navigate("/profile");
-        // }
-      })
-      .catch((err) => {
-        setError(err.message);
-      });
-  } else {
-    alert("check the fields");
-  }
-  setShowModal("");
-  console.log("project stored in db");
-  getTaskApi(props.projectid)
-};
-  if (!loading) { 
+        .post(postFilesApi(), upload)
+        .then(({ data }) => {
+          if (data.error) {
+            setError(data.error.message);
+          } //else {
+          //   // dispatch(AddTocurrentProjects(data.projectDetails));
+          //   navigate("/profile");
+          // }
+        })
+        .catch((err) => {
+          setError(err.message);
+        });
+    } else {
+      alert("check the fields");
+    }
+    setShowModal("");
+    console.log("project stored in db");
+    getTaskApi(props.projectid);
+  };
+  if (!loading) {
     console.log(State.Name);
   }
   return (
@@ -123,14 +114,33 @@ function Team(props) {
         </div>
         <div className="flex items-center justify-between">
           <div className="flex bg-gray-50 items-center p-2 rounded-md">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5 text-gray-400"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                clipRule="evenodd"
+              />
             </svg>
-            <input className="bg-gray-50 outline-none ml-1 block " type="text" name id placeholder="search..." />
+            <input
+              className="bg-gray-50 outline-none ml-1 block "
+              type="text"
+              name
+              id
+              placeholder="search..."
+            />
           </div>
-          <div className="lg:ml-40 ml-10 space-x-8">
-            <button className="bg-indigo-600 px-4 py-2 rounded-md text-white font-semibold tracking-wide cursor-pointer">New Report</button>
-            <button className="bg-indigo-600 px-4 py-2 rounded-md text-white font-semibold tracking-wide cursor-pointer">Create</button>
+          <div className="lg:ml-40 ml-auto flex space-x-2 h-10">
+            <button className="btn-pri">
+              New Report
+            </button>
+            <button className="btn-sec bg-blue-700">
+              Create
+            </button>
           </div>
         </div>
       </div>
@@ -158,61 +168,56 @@ function Team(props) {
                 </tr>
               </thead>
 
-
-              {(!loading )? (<tbody>
-                {State.map((task) => (
-        
-                <tr>
-                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                    <div className="flex items-center">
-                      <div className="ml-3">
+              {!loading ? (
+                <tbody>
+                  {State.map((task) => (
+                    <tr>
+                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        <div className="flex items-center">
+                          <div className="ml-3">
+                            <p className="text-gray-900 whitespace-no-wrap">
+                              {task.taskname}{" "}
+                            </p>
+                            <p className="text-gray-500 whitespace-no-wrap">
+                              {task.desc}
+                            </p>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                         <p className="text-gray-900 whitespace-no-wrap">
-                          {task.taskname}  </p>
-                          <p className="text-gray-500 whitespace-no-wrap">
-                            {task.desc}
-                          </p>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                    <p className="text-gray-900 whitespace-no-wrap">{task.date.substring(0,10)}</p>
-                  </td>
-                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                    <p className="text-gray-900 whitespace-no-wrap">
-                     {task.deadline}
-                    </p>
-                  </td>
-                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                    <p className="text-gray-900 whitespace-no-wrap">
-                
-                  {task.status.includes(user.email)?("Submited"):("Pending")}
-                   
-            
-                    </p>
-                  </td>
-                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                    <div className="h-8 w-8 rounded-full overflow-hidden"
-
-                    >
-                      <img
-                        className="object-cover  h-fit"
-                        onClick={() => setShowModal(task)}
-                       
-                        src={
-                          Upload
-                        }
-                        alt=""
-                      />
-
-                    </div>
-                  </td>
-                </tr>
-                ))}
-           
-
-              </tbody>):(<div>Loading ......</div>)}
-                
-              </table>
+                          {task.date.substring(0, 10)}
+                        </p>
+                      </td>
+                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        <p className="text-gray-900 whitespace-no-wrap">
+                          {task.deadline}
+                        </p>
+                      </td>
+                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        <p className="text-gray-900 whitespace-no-wrap">
+                          {task.status.includes(user.email)
+                            ? "Submited"
+                            : "Pending"}
+                        </p>
+                      </td>
+                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        <div className="h-8 w-8 rounded-full overflow-hidden">
+                          <img
+                            className="object-cover  h-fit"
+                            onClick={() => setShowModal(task)}
+                            src={Upload}
+                            alt=""
+                          />
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              ) : (
+                <div>Loading ......</div>
+              )}
+            </table>
             <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between          ">
               <span className="text-xs xs:text-sm text-gray-900">
                 Showing 1 to 4 of 4 Entries
@@ -232,43 +237,49 @@ function Team(props) {
       </div>
       {showModal ? (
         <div>
-        
-          <div
-            className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
-          >
+          <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
             <div className="relative w-auto my-6 mx-auto max-w-3xl">
               {/*content*/}
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full   bg-white-light outline-none focus:outline-none">
                 {/*header*/}
-                
-               
+
                 <div className="sm:max-w-lg w-full pt-5 px-12 bg-white rounded-xl z-10">
-                
                   <div className="text-center">
-                  <button
-                    className="p-2 ml-auto  bg-red-500 border-0  rounded-full  text-white-duller float-right text-lg leading-none font-semibold outline-none focus:outline-none"
-                    onClick={() => setShowModal("")}
-                  >
-                    X
-                  </button>
+                    <button
+                      className="p-2 ml-auto  bg-red-500 border-0  rounded-full  text-white-duller float-right text-lg leading-none font-semibold outline-none focus:outline-none"
+                      onClick={() => setShowModal("")}
+                    >
+                      X
+                    </button>
                     <h2 className="mt-5 text-3xl font-bold text-gray-900">
                       File Upload!<br></br>
                       {showModal.taskname}
                     </h2>
                   </div>
-                  <form className="mt-8 space-y-3" action="#" method="POST" enctype="multipart/form-data">
-                    
+                  <form
+                    className="mt-8 space-y-3"
+                    action="#"
+                    method="POST"
+                    enctype="multipart/form-data"
+                  >
                     <div className="grid grid-cols-1 space-y-2">
-                      <label className="text-sm font-bold text-gray-500 tracking-wide">Link</label>
-                      <input className="text-base p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500" type placeholder="mail@gmail.com"
-                       onChange={(e) => setLink(e.target.value)} />
+                      <label className="text-sm font-bold text-gray-500 tracking-wide">
+                        Link
+                      </label>
+                      <input
+                        className="text-base p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
+                        type
+                        placeholder="mail@gmail.com"
+                        onChange={(e) => setLink(e.target.value)}
+                      />
                     </div>
                     <div className="grid grid-cols-1 space-y-2">
-                      <label className="text-sm font-bold text-gray-500 tracking-wide">Attach Document</label>
+                      <label className="text-sm font-bold text-gray-500 tracking-wide">
+                        Attach Document
+                      </label>
                       <div className="flex items-center justify-center w-full">
                         <label className="flex flex-col rounded-lg border-4 border-dashed w-full h-40 p-10 group text-center">
-                          
-                          <input type="file"     onChange={onChange}/>
+                          <input type="file" onChange={onChange} />
                         </label>
                       </div>
                     </div>
@@ -276,23 +287,25 @@ function Team(props) {
                       <span>File type: doc,pdf,types of images</span>
                     </p>
                     <div>
-                      <button type="submit" className="my-5 w-full flex justify-center bg-blue-500 text-gray-100 p-4  rounded-full tracking-wide
+                      <button
+                        type="submit"
+                        className="my-5 w-full flex justify-center bg-blue-500 text-gray-100 p-4  rounded-full tracking-wide
                                               font-semibold  focus:outline-none focus:shadow-outline hover:bg-blue-600 shadow-lg cursor-pointer transition ease-in duration-300"
-                                              onClick={handleForm}
-                                              >
+                        onClick={handleForm}
+                      >
                         Upload
                       </button>
-                      <button type="submit" className="my-5 w-full flex justify-center bg-blue-500 text-gray-100 p-4  rounded-full tracking-wide
+                      <button
+                        type="submit"
+                        className="my-5 w-full flex justify-center bg-blue-500 text-gray-100 p-4  rounded-full tracking-wide
                                               font-semibold  focus:outline-none focus:shadow-outline hover:bg-blue-600 shadow-lg cursor-pointer transition ease-in duration-300"
-                                              
-                                              onClick={() => setShowModal("")}>
+                        onClick={() => setShowModal("")}
+                      >
                         Close
                       </button>
                     </div>
                   </form>
                 </div>
-
-
               </div>
             </div>
           </div>
@@ -300,8 +313,6 @@ function Team(props) {
         </div>
       ) : null}
     </div>
-
-
   );
 }
 

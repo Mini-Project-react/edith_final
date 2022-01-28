@@ -22,6 +22,7 @@ export default function App() {
           <Route path="profile" element={<Profile />} />
           <Route path="team" element={<Team />} />
           <Route path="join" element={<Join />} />
+          <Route path="an" element={<Anime />} />
           <Route path="*" element={<Error />} />
         </Route>
       </Routes>

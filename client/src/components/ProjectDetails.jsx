@@ -14,6 +14,41 @@ export default function ProjectDetails() {
   const { State, loading, error } = useFetch(
     `http://localhost:5000/api/projects/show/${id}`
   );
+  const TeamMates = (teamMembersMail) => (
+    <div
+      className="flex bg-gray-100 border-b-2 w-full border-gray-200 flex-col text-gray-600 text-xs font-semibold max-w-lg p-3  pl-6 text-left shadow-md hover:shadow-lg lg:mx-auto rounded-xl"
+      draggable="true"
+    >
+      <div className="flex flex-col space-y-2 mt-2">
+        {user.email === teamMembersMail.memEmail ? (
+          <>
+            <span className=" text-gray-200 lg:mb-0" draggable="true">
+              {State.teamleaderid}
+            </span>
+            <span>Team leader</span>
+          </>
+        ) : (
+          <>
+            <span className=" text-gray-800 text-lg lg:mb-0" draggable="true">
+              {teamMembersMail.memEmail}
+            </span>
+            <span>Member</span>
+          </>
+        )}
+      </div>
+
+      <div className="flex w-full justify-between items-center py-4 px-2">
+        {/* <img
+          className="inline-block object-cover object-center   w-16 h-16 mt-4 rounded-full"
+          alt="testimonial"
+          src={Altuser}
+        /> */}
+        <MockIcon size="bb" />
+
+        <button className="btn-pri">Message</button>
+      </div>
+    </div>
+  );
   return !error ? (
     !loading ? (
       <section>
@@ -72,41 +107,23 @@ export default function ProjectDetails() {
               </div>
               <h1
                 className="
-    mx-auto
-    mb-8
-    text-2xl
+    text-2xl inline-flex ml-4
     font-semibold
-    leading-none
-    tracking-tighter
-
     text-neutral-600
     lg:text-3xl
   "
               >
-                {" "}
                 {State.projectname}
               </h1>
-              <h1
-                className="
-  mx-auto
-  mb-8
-  text-2xl
-  font-semibold
-  leading-none
-  tracking-tighter
-  text-neutral-400
-  lg:text-1xl
-  
-"
-              >
-                {" "}
-                {State.head}
-              </h1>
-              <p className="mx-auto text-base leading-relaxed text-gray-500">
-                {" "}
-                {State.desc}{" "}
-              </p>
-              <p className="  text-2xl">Menor: {State.mentor}</p>
+              <span className="">
+                <h1 className="leading-none tracking-tighter text-xl text-neutral-400 lg:text-1xl font-medium mb-2">
+                  {State.head}
+                </h1>
+                <p className="text-base leading-relaxed text-gray-500">
+                  {State.desc}
+                </p>
+              </span>
+              <p className="  text-2xl">Mentor: {State.mentor}</p>
             </div>
           </div>
         </div>
@@ -132,56 +149,7 @@ export default function ProjectDetails() {
                     className="grid grid-cols-1 gap-6 lg:grid-cols-3"
                     draggable="true"
                   >
-                    {State.teamMembersMail.map((teamMembersMail) => (
-                      <div
-                        className="flex   bg-gray-400 flex-col w-full max-w-lg p-3  pl-6 text-left shadow-2xl lg:mx-auto rounded-xl"
-                        draggable="true"
-                      >
-                        <h2
-                          className="mt-3 text-xs font-semibold tracking-widest   text-black "
-                          draggable="true"
-                        >
-                          {user.email === teamMembersMail.memEmail ? (
-                            <span>
-                              {" "}
-                              {State.teamleaderid}
-                              <span
-                                href="#"
-                                className="font-semibold text-gray-800 lg:mb-0"
-                                draggable="true"
-                              >
-                                <br></br>
-                                <span>Team leader</span>
-                              </span>
-                            </span>
-                          ) : (
-                            <span>
-                              {teamMembersMail.memEmail}
-                              <span
-                                href="#"
-                                className="font-semibold text-gray-800 lg:mb-0"
-                                draggable="true"
-                              >
-                                <br></br>
-                                <span>Member</span>
-                              </span>
-                            </span>
-                          )}
-                        </h2>
-                        <div className="  flex ">
-                          <img
-                            className="inline-block object-cover object-center   w-16 h-16 mt-4 rounded-full"
-                            alt="testimonial"
-                            src={Altuser}
-                          />
-                          <div className="p-7">
-                            <button className=" justify-center bg-blue-300 p-2 ml-4  text-lg text-black rounded-2xl">
-                              Message
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
+                    {State.teamMembersMail.map(TeamMates)}
                   </div>
                 </div>
               </section>
@@ -189,7 +157,7 @@ export default function ProjectDetails() {
           </div>
         </div>
 
-        {user.email === State.mentor ? (
+        {user.email !== State.mentor ? (
           <Mentor projectid={id} />
         ) : (
           <Team projectid={id} />
@@ -202,3 +170,32 @@ export default function ProjectDetails() {
     <>something happened</>
   );
 }
+
+const MockIcon = ({ size }) => (
+  <div
+    className="inline-flex items-center
+justify-center flex-shrink-0 w-9 h-9
+text-blue-600 rounded-full  bg-blue-50"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className="w-6 h-6 icon icon-tabler icon-tabler-aperture"
+      width={24}
+      height={24}
+      viewBox="0 0 24 24"
+      strokeWidth="1.5"
+      stroke="currentColor"
+      fill="none"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <circle cx={12} cy={12} r={9} />
+      <line x1="3.6" y1={15} x2="14.15" y2={15} />
+      <line x1="3.6" y1={15} x2="14.15" y2={15} transform="rotate(72 12 12)" />
+      <line x1="3.6" y1={15} x2="14.15" y2={15} transform="rotate(144 12 12)" />
+      <line x1="3.6" y1={15} x2="14.15" y2={15} transform="rotate(216 12 12)" />
+      <line x1="3.6" y1={15} x2="14.15" y2={15} transform="rotate(288 12 12)" />
+    </svg>
+  </div>
+);

@@ -61,7 +61,7 @@ export default function Anime({ addNew }) {
       <nav className="flex">
         <h1>Edith</h1>
       </nav> */}
-      {!isloading ? (
+      {isloading ? (
         <div className="p-8 relative z-40 flex md:flex-row w-full flex-col">
           {/* contains two section img and those other text and title */}
           <div

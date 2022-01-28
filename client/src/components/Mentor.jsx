@@ -194,66 +194,31 @@ function Mentor(props) {
                     </h2>
                   </div>
                   <form className="mt-8 space-y-3" action="#" method="POST">
-                    <div className="grid grid-cols-1 space-y-2">
+                 
+                  {showModal.Submissions.map((submit)=>(
+                    <div className="grid grid-cols-1 space-y-2 divide-y-4 divide-y-reverse">
                       <label className="text-sm font-bold text-gray-500 tracking-wide">
-                        Team leader--teamleader@gmail.com
+                        {submit.user}
                       </label>
                       <div className="flex  justify-between">
-                        <label className="text-lg font-bold text-gray-800 tracking-wide">
-                          filename.pdf
-                        </label>
-
+                        <div className="flex-col">
+                        <label className="text-sm font-bold   text-blue-700 tracking-wide">
+                         <a href={submit.link}> {submit.link}</a>
+                        </label><br></br>
+                        <label className="text-sm font-bold   text-black-700 tracking-wide">
+                        <a href=""> {submit.file}</a>
+                        
+                       </label>
+                        </div>
                         <input
                           type="checkbox"
                           className=" m-2 right-0 h-4 w-4 border border-gray-300 rounded-full bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 my-1 align-top bg-no-repeat bg-center bg-contain float-left cursor-pointer"
                         ></input>
                       </div>
                     </div>
-                    <div className="grid grid-cols-1 space-y-2">
-                      <label className="text-sm font-bold text-gray-500 tracking-wide">
-                        Member--teammate1@gmail.com
-                      </label>
-                      <div className="flex  justify-between">
-                        <label className="text-lg font-bold text-gray-800 tracking-wide">
-                          filename.pdf
-                        </label>
+                    ))}
 
-                        <input
-                          type="checkbox"
-                          className=" m-2 right-0 h-4 w-4 border border-gray-300 rounded-full bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 my-1 align-top bg-no-repeat bg-center bg-contain float-left cursor-pointer"
-                        ></input>
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-1 space-y-2">
-                      <label className="text-sm font-bold text-gray-500 tracking-wide">
-                        Member--teammate2@gmail.com
-                      </label>
-                      <div className="flex  justify-between">
-                        <label className="text-lg font-bold text-gray-800 tracking-wide">
-                          filename.pdf
-                        </label>
-
-                        <input
-                          type="checkbox"
-                          className=" m-2 right-0 h-4 w-4 border border-gray-300 rounded-full bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 my-1 align-top bg-no-repeat bg-center bg-contain float-left cursor-pointer"
-                        ></input>
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-1 space-y-2">
-                      <label className="text-sm font-bold text-gray-500 tracking-wide">
-                        Member--teammate3@gmail.com
-                      </label>
-                      <div className="flex  justify-between">
-                        <label className="text-lg font-bold text-gray-800 tracking-wide">
-                          filename.pdf
-                        </label>
-
-                        <input
-                          type="checkbox"
-                          className=" m-2 right-0 h-4 w-4 border border-gray-300 rounded-full bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 my-1 align-top bg-no-repeat bg-center bg-contain float-left cursor-pointer"
-                        ></input>
-                      </div>
-                    </div>
+                    
 
                     <div>
                       <button

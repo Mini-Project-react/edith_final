@@ -42,7 +42,8 @@ const store = (req, res, next) => {
       user: req.body.teammember,
       taskid: req.body.taskid,
       date: req.body.date,
-      time:req.body.time
+      time:req.body.time,
+      
     };
     if(req.files){
       const file = req.files.file;
@@ -61,6 +62,15 @@ const store = (req, res, next) => {
     TaskSch.findOneAndUpdate(
       { _id:updateData.taskid},
       { $push: { Submissions:updateData } },
+      { new: true, upsert: true },
+      function (err, managerparent) {
+        if (err) throw err;
+        console.log(managerparent);
+      }
+    );
+    TaskSch.findOneAndUpdate(
+      { _id:updateData.taskid},
+      { $push: {status:updateData.user} },
       { new: true, upsert: true },
       function (err, managerparent) {
         if (err) throw err;

@@ -15,7 +15,7 @@ function Team(props) {
   const [error, setError] = useState("");
   const { State, loading } = useFetch(getTaskApi(props.projectid));
   const [link, setLink] = useState("");
-  const [taskid,setTaskid]=useState("")
+
 
 
   const [file, setFile] = useState('');
@@ -28,6 +28,7 @@ function Team(props) {
   const onChange = e => {
     setFile(e.target.files[0]);
     setFilename(e.target.files[0].name);
+    
   };
 
 
@@ -35,7 +36,7 @@ function Team(props) {
 
     e.preventDefault();
 
-
+    
 
 
     const formData = new FormData();
@@ -108,6 +109,7 @@ function Team(props) {
   }
   setShowModal("");
   console.log("project stored in db");
+  getTaskApi(props.projectid)
 };
   if (!loading) { 
     console.log(State.Name);
@@ -182,7 +184,10 @@ function Team(props) {
                   </td>
                   <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                     <p className="text-gray-900 whitespace-no-wrap">
-                      Pending
+                
+                  {task.status.includes(user.email)?("Submited"):("Pending")}
+                   
+            
                     </p>
                   </td>
                   <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">

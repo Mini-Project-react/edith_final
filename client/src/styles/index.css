@@ -1,7 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+@layer components{
+  .btn-pri{
+    @apply   w-1/2 sm:w-auto flex items-center justify-center text-gray-800 font-medium  bg-opacity-0 hover:bg-opacity-30 rounded-lg shadow-sm hover:shadow-lg py-3 px-5 border border-cgray-700 border-opacity-30 transform-gpu hover:-translate-y-0.5 transition-all duration-150 
+  }
+  .btn-sec{
+    @apply bg-cgray-heavy text-white-light rounded-md py-3 px-5 w-full sm:w-auto flex flex-nowrap shadow-md hover:bg-opacity-100 bg-opacity-95  whitespace-nowrap items-center
+    hover:shadow-lg hover:-translate-y-0.5 transform-gpu transition-all duration-150 cursor-pointer border border-transparent border-opacity-10;
+}
+}
 .bg {
     animation:slide 3s ease-in-out infinite alternate;
     background-image: linear-gradient(-60deg, #6c3 50%, #09f 50%);

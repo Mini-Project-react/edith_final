@@ -7,7 +7,7 @@ import axios from "axios";
 function Mentor(props) {
   const [showModal, setShowModal] = React.useState("");
   const [form, showform] = useState(false);
-  const { State, loading, rerender } = useFetch(getTaskApi(props.projectid));
+  const [State, loading, , rerender] = useFetch(getTaskApi(props.projectid));
   //task-form details
   const [taskname, settaskname] = useState("");
   const [dateinput, setDateinput] = useState("2021-10-06");
@@ -222,7 +222,12 @@ function Mentor(props) {
                               </label>
                               <br></br>
                               <label className="text-sm font-bold   text-black-700 tracking-wide">
-                                <a href={`http://localhost:5000/uploads/${submit.file}`}> {submit.file}</a>
+                                <a
+                                  href={`http://localhost:5000/uploads/${submit.file}`}
+                                >
+                                  {" "}
+                                  {submit.file}
+                                </a>
                               </label>
                             </div>
                             <input

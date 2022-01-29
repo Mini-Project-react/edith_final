@@ -12,7 +12,6 @@ export function useFetch(url) {
         setError(error);
       } else {
         setState(response);
-        console.log(response);
         setloading(false);
       }
     });
@@ -24,5 +23,5 @@ export function useFetch(url) {
   const rerender = () => {
     fetchData();
   };
-  return { State, loading, error, rerender };
+  return [State, loading, error, rerender];
 }

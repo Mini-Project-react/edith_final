@@ -11,13 +11,14 @@ import { useFetch } from "../use-fetch";
 export default function ProjectDetails() {
   const { id } = useParams();
   const user = useSelector(selectUser);
-  const { State, loading, error } = useFetch(
+  const [State, loading, error] = useFetch(
     `http://localhost:5000/api/projects/show/${id}`
   );
-  const TeamMates = (teamMembersMail) => (
+  const TeamMates = (teamMembersMail, index) => (
     <div
       className="flex bg-gray-100 border-b-2 w-full border-gray-200 flex-col text-gray-600 text-xs font-semibold max-w-lg p-3  pl-6 text-left shadow-md hover:shadow-lg lg:mx-auto rounded-xl"
       draggable="true"
+      key={index + "shfidasndn"}
     >
       <div className="flex flex-col space-y-2 mt-2">
         {user.email === teamMembersMail.memEmail ? (
@@ -51,70 +52,87 @@ export default function ProjectDetails() {
   );
   return !error ? (
     !loading ? (
-      <section>
+      <section className="h-full w-full">
         <div className="relative w-full px-5 py-2 mx-auto md:px-12 lg:px-24 max-w-12xl">
           <div className="grid w-full grid-cols-1 mx-auto">
             <div className="max-w-full p-6">
-              <div
-                className="inline-flex items-center
+              <div className="flex items-baseline">
+                <div
+                  className="inline-flex items-center
     justify-center flex-shrink-0 w-12 h-12 mb-5
     text-blue-600 rounded-full  bg-blue-50"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-6 h-6 icon icon-tabler icon-tabler-aperture"
-                  width={24}
-                  height={24}
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  fill="none"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
                 >
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                  <circle cx={12} cy={12} r={9} />
-                  <line x1="3.6" y1={15} x2="14.15" y2={15} />
-                  <line
-                    x1="3.6"
-                    y1={15}
-                    x2="14.15"
-                    y2={15}
-                    transform="rotate(72 12 12)"
-                  />
-                  <line
-                    x1="3.6"
-                    y1={15}
-                    x2="14.15"
-                    y2={15}
-                    transform="rotate(144 12 12)"
-                  />
-                  <line
-                    x1="3.6"
-                    y1={15}
-                    x2="14.15"
-                    y2={15}
-                    transform="rotate(216 12 12)"
-                  />
-                  <line
-                    x1="3.6"
-                    y1={15}
-                    x2="14.15"
-                    y2={15}
-                    transform="rotate(288 12 12)"
-                  />
-                </svg>
-              </div>
-              <h1
-                className="
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-6 h-6 icon icon-tabler icon-tabler-aperture"
+                    width={24}
+                    height={24}
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    fill="none"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <circle cx={12} cy={12} r={9} />
+                    <line x1="3.6" y1={15} x2="14.15" y2={15} />
+                    <line
+                      x1="3.6"
+                      y1={15}
+                      x2="14.15"
+                      y2={15}
+                      transform="rotate(72 12 12)"
+                    />
+                    <line
+                      x1="3.6"
+                      y1={15}
+                      x2="14.15"
+                      y2={15}
+                      transform="rotate(144 12 12)"
+                    />
+                    <line
+                      x1="3.6"
+                      y1={15}
+                      x2="14.15"
+                      y2={15}
+                      transform="rotate(216 12 12)"
+                    />
+                    <line
+                      x1="3.6"
+                      y1={15}
+                      x2="14.15"
+                      y2={15}
+                      transform="rotate(288 12 12)"
+                    />
+                  </svg>
+                </div>
+                <h1
+                  className="
     text-2xl inline-flex ml-4
     font-semibold
     text-neutral-600
     lg:text-3xl
   "
-              >
-                {State.projectname}
-              </h1>
+                >
+                  {State.projectname}
+                </h1>
+                <div className="ml-auto">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-6 w-6"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M18 13V5a2 2 0 00-2-2H4a2 2 0 00-2 2v8a2 2 0 002 2h3l3 3 3-3h3a2 2 0 002-2zM5 7a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1zm1 3a1 1 0 100 2h3a1 1 0 100-2H6z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </div>
+              </div>
+
               <span className="">
                 <h1 className="leading-none tracking-tighter text-xl text-neutral-400 lg:text-1xl font-medium mb-2">
                   {State.head}

@@ -7,12 +7,15 @@ import { postFilesApi } from "../helper";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { selectUser } from "../features/userReducer";
+import { useEffect } from "react";
 
 function Team(props) {
   const user = useSelector(selectUser);
   const [showModal, setShowModal] = React.useState("");
-  const [error, setError] = useState("");
-  const { State, loading } = useFetch(getTaskApi(props.projectid));
+  // actual tasks to display
+  const [tasks, setTasks] = useState([]);
+  // tasks from, server as backup to set the tasks when the get emptied while searching through them
+  const [State, loading] = useFetch(getTaskApi(props.projectid));
   const [link, setLink] = useState("");
 
   const [file, setFile] = useState("");
@@ -21,12 +24,32 @@ function Team(props) {
   const [message, setMessage] = useState("");
   const [uploadPercentage, setUploadPercentage] = useState(0);
   let isInValid = !link;
-
+  useEffect(() => {
+    setTasks(State);
+  }, [State]);
   const onChange = (e) => {
     setFile(e.target.files[0]);
     setFilename(e.target.files[0].name);
   };
 
+  const handleSearch = ({ target: { value } }) => {
+    if (value) {
+      setTasks(
+        State.filter((task) => {
+          if (
+            task.taskname
+              .replaceAll(/\s/g, "")
+              .toLocaleLowerCase()
+              .includes(value.trim().toLocaleLowerCase())
+          ) {
+            return task;
+          }
+        })
+      );
+    } else {
+      setTasks(State);
+    }
+  };
   const handleForm = async (e) => {
     e.preventDefault();
 
@@ -86,14 +109,14 @@ function Team(props) {
         .post(postFilesApi(), upload)
         .then(({ data }) => {
           if (data.error) {
-            setError(data.error.message);
+            // setError(data.error.message);
           } //else {
           //   // dispatch(AddTocurrentProjects(data.projectDetails));
           //   navigate("/profile");
           // }
         })
         .catch((err) => {
-          setError(err.message);
+          // setError(err.message);
         });
     } else {
       alert("check the fields");
@@ -102,9 +125,6 @@ function Team(props) {
     console.log("project stored in db");
     getTaskApi(props.projectid);
   };
-  if (!loading) {
-    console.log(State.Name);
-  }
   return (
     <div className="bg-white p-8 rounded-md w-full">
       <div className=" flex items-center justify-between pb-6">
@@ -129,18 +149,13 @@ function Team(props) {
             <input
               className="bg-gray-50 outline-none ml-1 block "
               type="text"
-              name
-              id
+              onChange={handleSearch}
               placeholder="search..."
             />
           </div>
           <div className="lg:ml-40 ml-auto flex space-x-2 h-10">
-            <button className="btn-pri">
-              New Report
-            </button>
-            <button className="btn-sec bg-blue-700">
-              Create
-            </button>
+            <button className="btn-pri">New Report</button>
+            <button className="btn-sec bg-blue-700">Create</button>
           </div>
         </div>
       </div>
@@ -168,55 +183,65 @@ function Team(props) {
                 </tr>
               </thead>
 
-              {!loading ? (
-                <tbody>
-                  {State.map((task) => (
-                    <tr>
-                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                        <div className="flex items-center">
-                          <div className="ml-3">
+              <tbody>
+                {!loading ? (
+                  tasks.length > 0 ? (
+                    tasks.map((task) => (
+                      <>
+                        <tr key={task.id}>
+                          <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                            <div className="flex items-center">
+                              <div className="ml-3">
+                                <p className="text-gray-900 whitespace-no-wrap">
+                                  {task.taskname}{" "}
+                                </p>
+                                <p className="text-gray-500 whitespace-no-wrap">
+                                  {task.desc}
+                                </p>
+                              </div>
+                            </div>
+                          </td>
+                          <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                             <p className="text-gray-900 whitespace-no-wrap">
-                              {task.taskname}{" "}
+                              {task.date.substring(0, 10)}
                             </p>
-                            <p className="text-gray-500 whitespace-no-wrap">
-                              {task.desc}
+                          </td>
+                          <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                            <p className="text-gray-900 whitespace-no-wrap">
+                              {task.deadline}
                             </p>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                        <p className="text-gray-900 whitespace-no-wrap">
-                          {task.date.substring(0, 10)}
-                        </p>
-                      </td>
-                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                        <p className="text-gray-900 whitespace-no-wrap">
-                          {task.deadline}
-                        </p>
-                      </td>
-                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                        <p className="text-gray-900 whitespace-no-wrap">
-                          {task.status.includes(user.email)
-                            ? "Submited"
-                            : "Pending"}
-                        </p>
-                      </td>
-                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                        <div className="h-8 w-8 rounded-full overflow-hidden">
-                          <img
-                            className="object-cover  h-fit"
-                            onClick={() => setShowModal(task)}
-                            src={Upload}
-                            alt=""
-                          />
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              ) : (
-                <div>Loading ......</div>
-              )}
+                          </td>
+                          <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                            <p className="text-gray-900 whitespace-no-wrap">
+                              {task.status.includes(user.email)
+                                ? "Submited"
+                                : "Pending"}
+                            </p>
+                          </td>
+                          <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                            <div className="h-8 w-8 rounded-full overflow-hidden">
+                              <img
+                                className="object-cover  h-fit"
+                                onClick={() => setShowModal(task)}
+                                src={Upload}
+                                alt=""
+                              />
+                            </div>
+                          </td>
+                        </tr>
+                      </>
+                    ))
+                  ) : (
+                    <div className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                      no res found
+                    </div>
+                  )
+                ) : (
+                  <div className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                    Loading
+                  </div>
+                )}
+              </tbody>
             </table>
             <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between          ">
               <span className="text-xs xs:text-sm text-gray-900">

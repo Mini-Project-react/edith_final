@@ -157,7 +157,7 @@ export default function ProjectDetails() {
           </div>
         </div>
 
-        {user.email !== State.mentor ? (
+        {user.email === State.mentor ? (
           <Mentor projectid={id} />
         ) : (
           <Team projectid={id} />

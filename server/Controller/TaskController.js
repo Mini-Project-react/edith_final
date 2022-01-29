@@ -1,3 +1,4 @@
+const path=require('path')
 const TaskSch = require("../Model/TaskSchema");
 const error = (message) => ({ error: { message } });
 const store = (req, res, next) => {
@@ -45,8 +46,9 @@ const show = (req, res, next) => {
     };
     if(req.files){
       const file = req.files.file;
-   
-      file.mv(`${__dirname}\\uploads\\${file.name}`, err => {
+  const folderpath=path.resolve("./");
+  console.log(folderpath)
+      file.mv(`${folderpath}\\uploads\\${file.name}`, err => {
         if (err) {
           console.error(err);
           return res.status(500).send(err);

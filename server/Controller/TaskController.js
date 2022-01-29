@@ -1,4 +1,5 @@
-const path=require('path')
+const { response } = require('express');
+const path = require('path')
 const TaskSch = require("../Model/TaskSchema");
 const error = (message) => ({ error: { message } });
 const store = (req, res, next) => {
@@ -33,29 +34,29 @@ const show = (req, res, next) => {
     });
 };
 
-  const upload = (req, res, next) => {
-  
-    let updateData = {
-      link: req.body.link,
-      file: req.body.filename,
-      user: req.body.teammember,
-      taskid: req.body.taskid,
-      date: req.body.date,
-      time:req.body.time,
-      
-    };
-    if(req.files){
-      const file = req.files.file;
-  const folderpath=path.resolve("./");
-  console.log(folderpath)
-      file.mv(`${folderpath}\\uploads\\${file.name}`, err => {
-        if (err) {
-          console.error(err);
-          return res.status(500).send(err);
-        }
+const upload =  (req, res, next) => {
 
-        res.json({ fileName: file.name, filePath: `/uploads/${file.name}` });
+  let updateData = {
+    link: req.body.link,
+    file: req.body.filename,
+    user: req.body.teammember,
+    taskid: req.body.taskid,
+    date: req.body.date,
+    time: req.body.time,
+
+  };
+  if (req.files) {
+    const file = req.files.file;
+    const folderpath = path.resolve("./");
+    console.log(folderpath)
+    file.mv(`${folderpath}\\uploads\\${file.name}`, err => {
+      if (err) {
+        console.error(err);
+        return res.status(500).send(err);
       }
+
+      res.json({ fileName: file.name, filePath: `/uploads/${file.name}` });
+    }
     );
   }
   TaskSch.findOneAndUpdate(
@@ -76,5 +77,6 @@ const show = (req, res, next) => {
       console.log(managerparent);
     }
   );
+
 };
 module.exports = { store, show, upload };

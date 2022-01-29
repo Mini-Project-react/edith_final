@@ -7,7 +7,7 @@ const TaskSchema = new mongoose.Schema(
       projectid: { type: String },
       desc: { type: String },
       Submissions: { type: Array, default: [] },
-      status:{type:Array, unique:true},
+      status:{type:Array, dropDups: true,unique:true},
       deadline: { type: String },
       date: {
         type: Date,

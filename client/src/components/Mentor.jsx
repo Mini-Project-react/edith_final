@@ -206,8 +206,8 @@ function Mentor(props) {
                          <a href={submit.link}> {submit.link}</a>
                         </label><br></br>
                         <label className="text-sm font-bold   text-black-700 tracking-wide">
-                        <a href=""> {submit.file}</a>
-                        
+                        <a href={'http://localhost:5000/uploads/'+submit.file} target="_blank" > {submit.file}</a>
+                     
                        </label>
                         </div>
                         <input

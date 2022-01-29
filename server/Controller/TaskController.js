@@ -47,8 +47,8 @@ const store = (req, res, next) => {
     };
     if(req.files){
       const file = req.files.file;
-
-      file.mv(`D:/EDITH/edith_final/client/public/uploads/${file.name}`, err => {
+   
+      file.mv(`${__dirname}\\uploads\\${file.name}`, err => {
         if (err) {
           console.error(err);
           return res.status(500).send(err);

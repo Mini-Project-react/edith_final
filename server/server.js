@@ -29,7 +29,7 @@ db.once("open", () => {
 
 const app = express();
 // middleWares
-
+console.log(__dirname);
 app.use(fileUpload());
 
 app.use(morgan("dev"));
@@ -56,4 +56,5 @@ app.get("/api/auth/post", verifytoken, (req, res) => {
     exclusive: "yes it is ",
   });
 });
- 
+
+app.use('/uploads', express.static('uploads'));

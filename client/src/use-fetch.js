@@ -5,7 +5,8 @@ export function useFetch(url) {
   const [State, setState] = useState(null);
   const [loading, setloading] = useState(true);
   const [error, setError] = useState(null);
-  useEffect(() => {
+
+  const fetchData = () => {
     fetchDataFromApi(url).then(([{ response }, err]) => {
       if (err) {
         setError(error);
@@ -15,7 +16,13 @@ export function useFetch(url) {
         setloading(false);
       }
     });
+  };
+  useEffect(() => {
+    fetchData();
   }, [url]);
 
-  return { State, loading, error };
+  const rerender = () => {
+    fetchData();
+  };
+  return { State, loading, error, rerender };
 }

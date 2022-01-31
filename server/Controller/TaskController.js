@@ -22,6 +22,56 @@ const store = (req, res, next) => {
       res.json({ message: "an error occures" });
     });
 };
+
+const markAttendence=(req,res,next)=>{
+ let checkedarray=req.body.checkedarray
+ let taskid=req.body.taskid
+
+ checkedarray.forEach((element)=>{
+   TaskSch.updateOne({'status.email':element},
+      {'$set': {
+             'status.$.attendance':true	   }},
+          function(err,model) {
+	   	if(err){
+        	console.log(err);
+        	return res.send(err);
+        }
+       
+ });})
+//  checkedarray.forEach((element)=>
+// {
+//   TaskSch.findOne({_id:taskid}).then(doc => {
+    
+//     item = doc.status.find(o => o.email === element)
+//     item["attendence"] = true;
+//     console.log("aaa   ",item)
+//     doc.save();
+    
+
+//     //sent respnse to client
+//   }).catch(err => {
+//     console.log(err)
+//   });
+
+
+
+
+
+//   // TaskSch.findById( taskid )
+//   // .then((response) => {
+//   //   checkedarray.forEach(element => {
+//   //     let obj=response.status.find(o => o.email === element)
+//   //     console.log(obj)
+//   //     obj.update({email:element},{$set: {'attendence': 'true'}})
+//   //   });
+   
+//   // })
+// })
+
+
+
+
+}
 const show = (req, res, next) => {
   // req.params.id
   let projectid = req.params.id;
@@ -70,7 +120,7 @@ const upload =  (req, res, next) => {
   );
   TaskSch.findOneAndUpdate(
     { _id: updateData.taskid },
-    { $push: { status: updateData.user } },
+    { $push: { status:{email:updateData.user, attendence:false }} },
     { new: true, upsert: true },
     function (err, managerparent) {
       if (err) throw err;
@@ -79,4 +129,4 @@ const upload =  (req, res, next) => {
   );
 
 };
-module.exports = { store, show, upload };
+module.exports = { store, show, upload,markAttendence };

@@ -1,7 +1,7 @@
 import React from "react";
 import { useFetch } from "../use-fetch";
 import { useState } from "react";
-import { postTaskApi } from "../helper";
+import { postAttendenceApi, postTaskApi } from "../helper";
 import { getTaskApi } from "../helper";
 import axios from "axios";
 function Mentor(props) {
@@ -13,7 +13,37 @@ function Mentor(props) {
   const [dateinput, setDateinput] = useState("2021-10-06");
   const [desc, setDesc] = useState("");
   const [error, setError] = useState("");
+  const [checkedArray] = useState([]); 
+
   let isInValid = !taskname || !desc;
+
+ const handleChange=(user) => { 
+    
+  checkedArray.indexOf(user)==-1?checkedArray.push(user):checkedArray.splice(checkedArray.indexOf(user),1)
+  console.log("points:   ",checkedArray)
+  
+  
+}; 
+
+const attendence=async(id)=>{
+setShowModal("");
+
+const details={
+  checkedarray:checkedArray,
+  taskid: id,
+
+}
+axios.post(postAttendenceApi(),
+details
+
+) .then(({ data }) => {
+  if (data.error) {
+    setError(data.error.message);
+    return;
+  }
+  rerender();
+})
+}
   const handleForm = async (e) => {
     e.preventDefault();
     showform(false);
@@ -233,7 +263,11 @@ function Mentor(props) {
                             <input
                               type="checkbox"
                               className=" m-2 right-0 h-4 w-4 border border-gray-300 rounded-full bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 my-1 align-top bg-no-repeat bg-center bg-contain float-left cursor-pointer"
-                            ></input>
+                              id="mycheck"
+                              defaultChecked={checkedArray.indexOf(submit.user)==-1?false:true}
+                              onClick={()=>handleChange(submit.user)}
+                              > 
+                            </input>
                           </div>
                         </div>
                       ))}
@@ -243,8 +277,10 @@ function Mentor(props) {
                       <button
                         className="  text-green-best right-0 background-transparent font-bold uppercase px-2 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                         type="button"
-                        onClick={() => setShowModal("")}
+                      
+                        onClick={()=>attendence(showModal._id)}
                       >
+                     { console.log(showModal)}
                         mark Attendence
                       </button>
                       <button

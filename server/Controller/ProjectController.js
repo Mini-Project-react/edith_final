@@ -28,6 +28,13 @@ const show = (req, res, next) => {
 };
 //add new user to db
 const store = (req, res, next) => {
+
+  let  mark=[];
+  mark.push({"memid":req.body.teamleaderid,"points":0})
+  req.body.teamMembersMail.forEach(element => {
+    mark.push({"memid":element.memEmail,"points":0})
+  });
+  console.log(req.body.teamMembersMail[0].memEmail)
   let project = new ProjectSch({
     projectname: req.body.projectname,
     teamleaderid: req.body.teamleaderid,
@@ -37,8 +44,10 @@ const store = (req, res, next) => {
     desc: req.body.desc,
     teamMembersMail: req.body.teamMembersMail,
     deadline: req.body.deadline,
+    marks:mark
     //photo:req.body.photo
   });
+  console.log(project)
   project
     .save()
     .then((response) => {
@@ -53,7 +62,7 @@ const store = (req, res, next) => {
         { new: true, upsert: true },
         function (err, managerparent) {
           if (err) throw err;
-          console.log(managerparent);
+         
         }
       );
       UserSch.findOneAndUpdate(
@@ -62,7 +71,7 @@ const store = (req, res, next) => {
         { new: true, upsert: true },
         function (err, managerparent) {
           if (err) console.log(err);
-          console.log(managerparent);
+         
         }
       );
       project.teamMembersMail.forEach((memDetails) => {
@@ -72,7 +81,7 @@ const store = (req, res, next) => {
           { new: true, upsert: true },
           function (err, managerparent) {
             if (err) console.log(err);
-            console.log(managerparent);
+        
           }
         );
       });
@@ -93,7 +102,9 @@ const update = (req, res, next) => {
     desc: req.body.desc,
     TeamMembersMail: [req.body.mails],
     deadline: req.body.deadline,
+
   };
+
   ProjectSch.findByIdAndUpdate(userId, { $set: updateData })
     .then((response) => {
       res.json({ message: "existing user updated sucessfully" });

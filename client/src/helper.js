@@ -23,3 +23,6 @@ export function getTaskApi(id) {
 export function postFilesApi() {
   return base_url + "api/tasks/upload";
 }
+export function postAttendenceApi() {
+  return base_url + "api/tasks/markattendence";
+}

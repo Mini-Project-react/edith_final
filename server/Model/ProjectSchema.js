@@ -22,6 +22,7 @@ const projectSchema = new mongoose.Schema(
       type: Date,
       default: Date.now,
     },
+    marks: { type: Array, default: [] }
   },
  
   { timestamps: true }

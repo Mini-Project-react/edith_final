@@ -33,6 +33,7 @@ export default function CreatePro() {
         mentor:mentor,
         deadline: dateinput,
         teamMembersMail: members,
+  
       };
       axios
         .post(postProjectApi(), createdProject)

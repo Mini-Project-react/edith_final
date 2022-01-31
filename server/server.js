@@ -51,6 +51,7 @@ app.post("/api/projects/delete", ProjectController.destroy);
 app.post("/api/tasks/store",TaskController.store);
 app.post("/api/tasks/upload",TaskController.upload);
 app.get("/api/tasks/show/:id",TaskController.show)
+app.post("/api/tasks/markattendence",TaskController.markAttendence)
 app.get("/api/auth/post", verifytoken, (req, res) => {
   res.json({
     exclusive: "yes it is ",

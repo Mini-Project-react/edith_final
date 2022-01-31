@@ -28,16 +28,20 @@ const markAttendence=(req,res,next)=>{
  let taskid=req.body.taskid
 
  checkedarray.forEach((element)=>{
-   TaskSch.updateOne({'status.email':element},
+   TaskSch.findOneAndUpdate({'status.email':element},
       {'$set': {
-             'status.$.attendance':true	   }},
+             'status.$.attendance':true,
+            }},{upsert:false,new:false},
           function(err,model) {
+            console.log(model.status);
 	   	if(err){
         	console.log(err);
+          
         	return res.send(err);
         }
        
  });})
+ 
 //  checkedarray.forEach((element)=>
 // {
 //   TaskSch.findOne({_id:taskid}).then(doc => {

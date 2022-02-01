@@ -4,6 +4,8 @@ import { useState } from "react";
 import { postAttendenceApi, postTaskApi } from "../helper";
 import { getTaskApi } from "../helper";
 import axios from "axios";
+import { Disclosure, Menu, Transition } from "@headlessui/react";
+
 function Mentor(props) {
   const [showModal, setShowModal] = React.useState("");
   const [form, showform] = useState(false);
@@ -72,9 +74,9 @@ function Mentor(props) {
   };
   return (
     <div>
-      <div className="container mx-auto max-w-[80%] flex flex-col space-y-4 justify-center items-center">
+      <div className="container mx-auto  mt-8 w-4/5 flex flex-col space-y-4 justify-center items-center">
         {form ? (
-          <form className="w-full max-w-2xl p-5 shadow-2xl flex flex-col items-center ">
+          <form className="w-fit  p-5 flex flex-col items-center bg-white-light rounded-md border border-gray-800 border-opacity-30">
             <div className="md:flex md:items-center mb-6">
               <div className="md:w-1/3">
                 <label
@@ -130,12 +132,12 @@ function Mentor(props) {
                 />
               </div>
             </div>
-            <div className="md:flex md:items-center">
+            <div className="md:flex md:items-center text-white-light">
               <div className=" flex m-2 p-2">
                 <div>
                   <p className="font-medium underline">{error}</p>
                   <button
-                    className="shadow m-2 bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+                    className="shadow m-2 bg-purple-600 hover:bg-purple-500  focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
                     type="button"
                     onClick={handleForm}
                   >
@@ -145,7 +147,7 @@ function Mentor(props) {
                 <div>
                   <button
                     onClick={() => showform(false)}
-                    className="shadow m-2 bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+                    className="shadow m-2 bg-purple-600 hover:bg-purple-500 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
                     type="button"
                   >
                     Cancel
@@ -155,19 +157,31 @@ function Mentor(props) {
             </div>
           </form>
         ) : (
-          <div className="bg-white-light flex items-center shadow-xl md:w-full p-4 m-3">
+          <Transition
+            as={React.Fragment}
+            show={!form}
+            enter="transition ease-out duration-150"
+            enterFrom="transform opacity-0 scale-95"
+            enterTo="transform opacity-100 scale-100"
+            leave="transition ease-in duration-300"
+            leaveFrom="transform opacity-100 scale-100"
+            leaveTo="transform opacity-0 scale-110 "
+          >
             <button
               onClick={() => showform(true)}
-              className="p-3 items-center  md:w-[100%]  h-20 rounded-md bg-violet-600 text-white-light"
+              className="items-center  w-full  h-20 rounded-md bg-violet-600 text-white-light text-center justify-center shadow-md hover:bg-opacity-80"
             >
               Assign new Task
             </button>
-          </div>
+          </Transition>
         )}
 
         {!loading ? (
           State.map((task) => (
-            <div className="bg-white w-full flex items-center p-2 rounded-xl shadow border px-4">
+            <div
+              className="bg-white w-full flex items-center p-2 rounded-xl shadow border px-4 "
+              key={task._id}
+            >
               <div className="flex items-center space-x-4 mr-4">
                 <img
                   src="https://avatars2.githubusercontent.com/u/1490347?s=460&u=39d7a6b9bc030244e2c509119e5f64eabb2b1727&v=4"
@@ -201,16 +215,16 @@ function Mentor(props) {
         )}
       </div>
 
-      {showModal ? (
+      {showModal && (
         <div className="h-screen">
-          <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+          <div className="justify-center items-center  flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none transform transition-all duration-150 ">
             <div className="relative w-auto my-6 mx-auto max-w-md h-max">
               {/*content*/}
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full  bg-white-light outline-none focus:outline-none">
                 {/*header*/}
 
                 <div className="sm:max-w-lg w-full  pt-5 px-12 bg-white rounded-xl z-10">
-                  <span className="p-4 h-6 w-6 flex text-center justify-center items-center ml-auto  text-red-500  rounded-full float-right outline-none focus:outline-none">
+                  {/* <span className="p-4 h-6 w-6 flex text-center justify-center items-center ml-auto  text-red-500  rounded-full float-right outline-none focus:outline-none">
                     <button className="" onClick={() => setShowModal("")}>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -227,7 +241,7 @@ function Mentor(props) {
                         />
                       </svg>
                     </button>
-                  </span>
+                  </span> */}
                   <div className="text-center">
                     <h2 className=" text-3xl font-bold text-gray-900">
                       {showModal.taskname}
@@ -248,7 +262,10 @@ function Mentor(props) {
                           }
                         );
                         return (
-                          <div className="grid grid-cols-1 space-y-2 relative hover:bg-gray-100 hover:bg-opacity-50  border border-gray-600 border-opacity-20 shadow-sm py-2 px-4 m-2 mx-3  my-2 rounded-md ">
+                          <div
+                            className="grid grid-cols-1 space-y-2 relative hover:bg-gray-100 hover:bg-opacity-50  border border-gray-600 border-opacity-20 shadow-sm py-2 px-4 m-2 mx-3  my-2 rounded-md "
+                            key={submit.taskid}
+                          >
                             <label className="text-sm font-bold text-gray-500 tracking-wide">
                               {submit.user}
                             </label>
@@ -289,6 +306,10 @@ function Mentor(props) {
                           </div>
                         );
                       })}
+
+                      {!(showModal.Submissions.length > 0) && (
+                        <div>not Yet posted</div>
+                      )}
                     </div>
 
                     <div className="py-5">
@@ -312,9 +333,9 @@ function Mentor(props) {
               </div>
             </div>
           </div>
-          <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+          <div className="opacity-25 fixed inset-0 z-40 bg-black transform-gpu transition-all duration-200"></div>
         </div>
-      ) : null}
+      )}
     </div>
   );
 }

@@ -13,38 +13,36 @@ function Mentor(props) {
   const [dateinput, setDateinput] = useState("2021-10-06");
   const [desc, setDesc] = useState("");
   const [error, setError] = useState("");
-  const [checkedArray] = useState([]); 
+  const [checkedArray] = useState([]);
 
   let isInValid = !taskname || !desc;
-const obj=useState("")
- const handleChange=(user) => { 
-    
-  checkedArray.indexOf(user)==-1?checkedArray.push(user):checkedArray.splice(checkedArray.indexOf(user),1)
-  console.log("points:   ",checkedArray)
-  
-  
-}; 
+  const obj = useState("");
+  const handleChange = (user) => {
+    checkedArray.indexOf(user) == -1
+      ? checkedArray.push(user)
+      : checkedArray.splice(checkedArray.indexOf(user), 1);
+    console.log("points:   ", checkedArray);
+  };
 
-const attendence=async(id)=>{
-setShowModal("");
+  const attendence = async (id) => {
+    setShowModal("");
 
-const details={
-  checkedarray:checkedArray,
-  taskid: id,
-  projectid:props.projectid
-
-}
-axios.post(postAttendenceApi(),
-details
-
-) .then(({ data }) => {
-  if (data.error) {
-    setError(data.error.message);
-    return;
-  }
-  rerender();
-})
-}
+    const details = {
+      checkedarray: checkedArray,
+      taskid: id,
+      projectid: props.projectid,
+    };
+    try {
+      const { data } = await axios.post(postAttendenceApi(), details);
+      if (data.error) {
+        setError(error.message);
+      } else {
+        rerender();
+      }
+    } catch (error) {
+      setError(error.message);
+    }
+  };
   const handleForm = async (e) => {
     e.preventDefault();
     showform(false);
@@ -206,7 +204,7 @@ details
       {showModal ? (
         <div className="h-screen">
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-            <div className="relative w-auto my-6 mx-auto max-w-3xl h-auto">
+            <div className="relative w-auto my-6 mx-auto max-w-md h-max">
               {/*content*/}
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full  bg-white-light outline-none focus:outline-none">
                 {/*header*/}
@@ -240,51 +238,65 @@ details
                     action="#"
                     method="POST"
                   >
-                    <div className="overflow-y-scroll h-3/4 max-h-60 scr border-b-8 border-opacity-70 ">
-                      {showModal.Submissions.map((submit) => (
-                        <div className="grid grid-cols-1 space-y-2 divide-y-4 divide-y-reverse">
-                          <label className="text-sm font-bold text-gray-500 tracking-wide">
-                            {submit.user}
-                          </label>
-                          <div className="flex  justify-between">
-                            <div className="flex-col">
-                              <label className="text-sm font-bold   text-blue-700 tracking-wide">
-                                <a href={submit.link}> {submit.link}</a>
-                              </label>
-                              <br></br>
-                              <label className="text-sm font-bold   text-black-700 tracking-wide">
-                                <a
-                                  href={`http://localhost:5000/uploads/${submit.file}`}
-                                >
-                                  {" "}
-                                  {submit.file}
-                                </a>
-                              </label>
+                    <div className="overflow-y-scroll overflow-x-hidden h-3/4 max-h-60 scr space-y-4 p-2">
+                      {showModal.Submissions.map((submit) => {
+                        let { attendance } = showModal.status.find(
+                          (eachUserStatus) => {
+                            if (eachUserStatus.email == submit.user) {
+                              return eachUserStatus;
+                            }
+                          }
+                        );
+                        return (
+                          <div className="grid grid-cols-1 space-y-2 relative hover:bg-gray-100 hover:bg-opacity-50  border border-gray-600 border-opacity-20 shadow-sm py-2 px-4 m-2 mx-3  my-2 rounded-md ">
+                            <label className="text-sm font-bold text-gray-500 tracking-wide">
+                              {submit.user}
+                            </label>
+                            <div className="flex  justify-between">
+                              <div className="flex-col">
+                                <label className="text-sm font-bold   text-blue-700 tracking-wide">
+                                  <a href={submit.link}> {submit.link}</a>
+                                </label>
+                                <br></br>
+                                <label className="text-sm font-bold   text-black-700 tracking-wide">
+                                  <a
+                                    href={`http://localhost:5000/uploads/${submit.file}`}
+                                  >
+                                    {submit.file}
+                                  </a>
+                                </label>
+                              </div>
+                              <div className="group flex">
+                                <input
+                                  type="checkbox"
+                                  className=" m-2 right-0 h-4 w-4 border border-gray-300 rounded-full bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 my-1 align-top bg-no-repeat bg-center bg-contain float-left cursor-pointer"
+                                  id="mycheck"
+                                  // defaultChecked={
+                                  //   checkedArray.indexOf(submit.user) == -1
+                                  //     ? false
+                                  //     : true
+                                  // }
+                                  disabled={attendance || false}
+                                  onClick={() => handleChange(submit.user)}
+                                />
+                                {attendance && (
+                                  <div className="group-hover:block  bg-gray-800 bg-opacity-70 text-white-light  absolute top-9 right-12   py-1 px-2 text-xs rounded-sm hidden">
+                                    alredy marked
+                                  </div>
+                                )}
+                              </div>
                             </div>
-                            <input
-                              type="checkbox"
-                              className=" m-2 right-0 h-4 w-4 border border-gray-300 rounded-full bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 my-1 align-top bg-no-repeat bg-center bg-contain float-left cursor-pointer"
-                              id="mycheck"
-                              defaultChecked={checkedArray.indexOf(submit.user)==-1?false:true}
-                              onClick={()=>handleChange(submit.user)}
-                              disabled={ showModal.status.find(o=>o.email===submit.user)?showModal.status.find(o=>o.attendence)?false:true:false}
-                              > 
-                           
-                              {console.log('asd',showModal.status.find(o=>o.email===submit.user))}
-                            </input>
                           </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
 
                     <div className="py-5">
                       <button
                         className="  text-green-best right-0 background-transparent font-bold uppercase px-2 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                         type="button"
-                      
-                        onClick={()=>attendence(showModal._id)}
+                        onClick={() => attendence(showModal._id)}
                       >
-                     { console.log(showModal)}
                         mark Attendence
                       </button>
                       <button

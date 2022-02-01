@@ -1,6 +1,6 @@
-const { response } = require('express');
-const path = require('path');
-const ProjectSch = require('../Model/ProjectSchema');
+const { response } = require("express");
+const path = require("path");
+const ProjectSch = require("../Model/ProjectSchema");
 const TaskSch = require("../Model/TaskSchema");
 const error = (message) => ({ error: { message } });
 const store = (req, res, next) => {
@@ -19,7 +19,6 @@ const store = (req, res, next) => {
     .then((response) => {
       console.log(response);
       res.json({ message: "Task added successfully" });
-
     })
     .catch((error) => {
       res.json({ message: "an error occures" + error });
@@ -27,55 +26,56 @@ const store = (req, res, next) => {
 };
 
 const markAttendence = (req, res, next) => {
-  let checkedarray = req.body.checkedarray
-  let taskid = req.body.taskid
+  let checkedarray = req.body.checkedarray;
+  let taskid = req.body.taskid;
   let projectid = req.body.projectid;
 
   checkedarray.forEach((element) => {
-    TaskSch.findOneAndUpdate({ $and: [{ 'status.email': element }, { '_id': taskid }] },
+    TaskSch.findOneAndUpdate(
+      { $and: [{ "status.email": element }, { _id: taskid }] },
       {
-        '$set': {
-          'status.$.attendance': true,
-        }
-      }, { upsert: false, new: false },
+        $set: {
+          "status.$.attendance": true,
+        },
+      },
+      { upsert: true, new: false },
       function (err, model) {
-        console.log(model.status);
         if (err) {
           console.log(err);
-
-          return res.send(err);
+          return res.json({
+            error: {
+              message: "something went wrong while attendance",
+            },
+          });
         }
-
-      });
-  })
-
+      }
+    );
+  });
 
   checkedarray.forEach((element) => {
-
-
-    ProjectSch.findOneAndUpdate({ $and: [{ 'marks.memid': element }, { '_id': projectid }] },
+    ProjectSch.findOneAndUpdate(
+      { $and: [{ "marks.memid": element }, { _id: projectid }] },
       {
-
-        $inc: { 'marks.$.points': 1 }
-       
+        $inc: { "marks.$.points": 1 },
       },
-    function(err,model)
-    {
-      if(model)
-      {
-        console.log(model)
+      function (err, model) {
+        if (model) {
+          console.log(model.marks);
+        } else {
+          return res.json({
+            error: {
+              message: "something went wrong while incresing points",
+            },
+          });
+        }
       }
-      else
-      {
-        console.log(err)
-      }
-    }
-  
-   ) })
-}
+    );
+  });
 
-
-
+  res.json({
+    succuss: true,
+  });
+};
 
 const show = (req, res, next) => {
   // req.params.id
@@ -90,7 +90,6 @@ const show = (req, res, next) => {
 };
 
 const upload = (req, res, next) => {
-
   let updateData = {
     link: req.body.link,
     file: req.body.filename,
@@ -98,21 +97,19 @@ const upload = (req, res, next) => {
     taskid: req.body.taskid,
     date: req.body.date,
     time: req.body.time,
-
   };
   if (req.files) {
     const file = req.files.file;
     const folderpath = path.resolve("./");
-    console.log(folderpath)
-    file.mv(`${folderpath}\\uploads\\${file.name}`, err => {
+    console.log(folderpath);
+    file.mv(`${folderpath}\\uploads\\${file.name}`, (err) => {
       if (err) {
         console.error(err);
         return res.status(500).send(err);
       }
 
       res.json({ fileName: file.name, filePath: `/uploads/${file.name}` });
-    }
-    );
+    });
   }
   TaskSch.findOneAndUpdate(
     { _id: updateData.taskid },
@@ -132,6 +129,5 @@ const upload = (req, res, next) => {
       console.log(managerparent);
     }
   );
-
 };
 module.exports = { store, show, upload, markAttendence };

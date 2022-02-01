@@ -1,5 +1,6 @@
 const { response } = require('express');
-const path = require('path')
+const path = require('path');
+const ProjectSch = require('../Model/ProjectSchema');
 const TaskSch = require("../Model/TaskSchema");
 const error = (message) => ({ error: { message } });
 const store = (req, res, next) => {
@@ -16,66 +17,66 @@ const store = (req, res, next) => {
   task
     .save()
     .then((response) => {
+      console.log(response);
       res.json({ message: "Task added successfully" });
+
     })
     .catch((error) => {
-      res.json({ message: "an error occures" });
+      res.json({ message: "an error occures" + error });
     });
 };
 
-const markAttendence=(req,res,next)=>{
- let checkedarray=req.body.checkedarray
- let taskid=req.body.taskid
+const markAttendence = (req, res, next) => {
+  let checkedarray = req.body.checkedarray
+  let taskid = req.body.taskid
+  let projectid = req.body.projectid;
 
- checkedarray.forEach((element)=>{
-   TaskSch.findOneAndUpdate({'status.email':element},
-      {'$set': {
-             'status.$.attendance':true,
-            }},{upsert:false,new:false},
-          function(err,model) {
-            console.log(model.status);
-	   	if(err){
-        	console.log(err);
-          
-        	return res.send(err);
+  checkedarray.forEach((element) => {
+    TaskSch.findOneAndUpdate({ $and: [{ 'status.email': element }, { '_id': taskid }] },
+      {
+        '$set': {
+          'status.$.attendance': true,
         }
+      }, { upsert: false, new: false },
+      function (err, model) {
+        console.log(model.status);
+        if (err) {
+          console.log(err);
+
+          return res.send(err);
+        }
+
+      });
+  })
+
+
+  checkedarray.forEach((element) => {
+
+
+    ProjectSch.findOneAndUpdate({ $and: [{ 'marks.memid': element }, { '_id': projectid }] },
+      {
+
+        $inc: { 'marks.$.points': 1 }
        
- });})
- 
-//  checkedarray.forEach((element)=>
-// {
-//   TaskSch.findOne({_id:taskid}).then(doc => {
-    
-//     item = doc.status.find(o => o.email === element)
-//     item["attendence"] = true;
-//     console.log("aaa   ",item)
-//     doc.save();
-    
-
-//     //sent respnse to client
-//   }).catch(err => {
-//     console.log(err)
-//   });
-
-
-
-
-
-//   // TaskSch.findById( taskid )
-//   // .then((response) => {
-//   //   checkedarray.forEach(element => {
-//   //     let obj=response.status.find(o => o.email === element)
-//   //     console.log(obj)
-//   //     obj.update({email:element},{$set: {'attendence': 'true'}})
-//   //   });
-   
-//   // })
-// })
-
-
-
-
+      },
+    function(err,model)
+    {
+      if(model)
+      {
+        console.log(model)
+      }
+      else
+      {
+        console.log(err)
+      }
+    }
+  
+   ) })
 }
+
+
+
+
 const show = (req, res, next) => {
   // req.params.id
   let projectid = req.params.id;
@@ -88,7 +89,7 @@ const show = (req, res, next) => {
     });
 };
 
-const upload =  (req, res, next) => {
+const upload = (req, res, next) => {
 
   let updateData = {
     link: req.body.link,
@@ -124,7 +125,7 @@ const upload =  (req, res, next) => {
   );
   TaskSch.findOneAndUpdate(
     { _id: updateData.taskid },
-    { $push: { status:{email:updateData.user, attendence:false }} },
+    { $push: { status: { email: updateData.user, attendance: false } } },
     { new: true, upsert: true },
     function (err, managerparent) {
       if (err) throw err;
@@ -133,4 +134,4 @@ const upload =  (req, res, next) => {
   );
 
 };
-module.exports = { store, show, upload,markAttendence };
+module.exports = { store, show, upload, markAttendence };

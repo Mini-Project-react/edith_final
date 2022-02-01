@@ -31,6 +31,7 @@ setShowModal("");
 const details={
   checkedarray:checkedArray,
   taskid: id,
+  projectid:props.projectid
 
 }
 axios.post(postAttendenceApi(),

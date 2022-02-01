@@ -14,6 +14,7 @@ export default function ProjectDetails() {
   const [State, loading, error] = useFetch(
     `http://localhost:5000/api/projects/show/${id}`
   );
+  
   const TeamMates = (teamMembersMail, index) => (
     <div
       className="flex bg-gray-100 border-b-2 w-full border-gray-200 flex-col text-gray-600 text-xs font-semibold max-w-lg p-3  pl-6 text-left shadow-md hover:shadow-lg lg:mx-auto rounded-xl"
@@ -23,10 +24,11 @@ export default function ProjectDetails() {
       <div className="flex flex-col space-y-2 mt-2">
         {user.email === teamMembersMail.memEmail ? (
           <>
-            <span className=" text-gray-200 lg:mb-0" draggable="true">
+            <span className=" text-gray-800 lg:mb-0" draggable="true">
               {State.teamleaderid}
             </span>
-            <span>Team leader</span>
+            <span>teamleader</span>
+            
           </>
         ) : (
           <>
@@ -176,9 +178,9 @@ export default function ProjectDetails() {
         </div>
 
         {user.email === State.mentor ? (
-          <Mentor projectid={id} />
+          <Mentor project={State} />
         ) : (
-          <Team projectid={id} />
+          <Team project={State} />
         )}
       </section>
     ) : (

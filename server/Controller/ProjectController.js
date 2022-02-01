@@ -30,9 +30,9 @@ const show = (req, res, next) => {
 const store = (req, res, next) => {
 
   let  mark=[];
-  mark.push({"memid":req.body.teamleaderid,"points":0})
+  mark.push({"memid":req.body.teamleaderid,"points":0,position:"Teamleader"})
   req.body.teamMembersMail.forEach(element => {
-    mark.push({"memid":element.memEmail,"points":0})
+    mark.push({"memid":element.memEmail,"points":0, position:"Member"})
   });
   console.log(req.body.teamMembersMail[0].memEmail)
   let project = new ProjectSch({

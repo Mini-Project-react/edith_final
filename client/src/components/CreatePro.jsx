@@ -16,7 +16,7 @@ export default function CreatePro() {
   const [head, setHead] = useState("");
   const [error, setError] = useState("");
   const [mentor, setMentor]=useState("");
-
+  const [teamleaderid, setTeamLeaderid] = useState("");
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
   const navigate = useNavigate();
@@ -27,7 +27,7 @@ export default function CreatePro() {
     if (!isInValid) {
       const createdProject = {
         projectname: projectname,
-        teamleaderid: user.email,
+        teamleaderid: teamleaderid,
         desc: desc,
         head: head,
         mentor:mentor,
@@ -78,6 +78,13 @@ export default function CreatePro() {
          placeholder="mentor mail id"
          name="mentor"
          onChange={(e)=>setMentor(e.target.value)}
+         />
+         <InputText 
+        type="text" 
+        contentHead="Team leader"
+         placeholder="TeamLeader id"
+         name="Team leader"
+         onChange={(e)=>setTeamLeaderid(e.target.value)}
          />
         <div className="flex  mb-4">
           <div className="md:pr-4 md:w-1/6 text-center mr-3">

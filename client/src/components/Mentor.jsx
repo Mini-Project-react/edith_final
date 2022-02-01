@@ -7,7 +7,7 @@ import axios from "axios";
 function Mentor(props) {
   const [showModal, setShowModal] = React.useState("");
   const [form, showform] = useState(false);
-  const [State, loading, , rerender] = useFetch(getTaskApi(props.projectid));
+  const [State, loading, , rerender] = useFetch(getTaskApi(props.project._id));
   //task-form details
   const [taskname, settaskname] = useState("");
   const [dateinput, setDateinput] = useState("2021-10-06");
@@ -21,7 +21,7 @@ function Mentor(props) {
     checkedArray.indexOf(user) == -1
       ? checkedArray.push(user)
       : checkedArray.splice(checkedArray.indexOf(user), 1);
-    console.log("points:   ", checkedArray);
+    
   };
 
   const attendence = async (id) => {
@@ -30,7 +30,7 @@ function Mentor(props) {
     const details = {
       checkedarray: checkedArray,
       taskid: id,
-      projectid: props.projectid,
+      projectid: props.project._id,
     };
     try {
       const { data } = await axios.post(postAttendenceApi(), details);
@@ -51,7 +51,7 @@ function Mentor(props) {
         taskname: taskname,
         desc: desc,
         deadline: dateinput,
-        projectid: props.projectid,
+        projectid: props.project._id,
       };
       axios
         .post(postTaskApi(), createtask)

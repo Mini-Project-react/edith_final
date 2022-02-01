@@ -2,7 +2,7 @@ import React from "react";
 import { useFetch } from "../use-fetch";
 import { useState } from "react";
 import Upload from "./upload.png";
-import { getTaskApi } from "../helper";
+import { getProjectsApi, getTaskApi ,getCurrUser} from "../helper";
 import { postFilesApi } from "../helper";
 import axios from "axios";
 import { useSelector } from "react-redux";
@@ -15,7 +15,8 @@ function Team(props) {
   // actual tasks to display
   const [tasks, setTasks] = useState([]);
   // tasks from, server as backup to set the tasks when the get emptied while searching through them
-  const [State, loading] = useFetch(getTaskApi(props.projectid));
+  const [State, loading] = useFetch(getTaskApi(props.project._id));
+  const obj=props.project.marks.find(o=>o.memid===user.email)
   const [link, setLink] = useState("");
 
   const [file, setFile] = useState("");
@@ -123,7 +124,7 @@ function Team(props) {
     }
     setShowModal("");
     console.log("project stored in db");
-    getTaskApi(props.projectid);
+    getTaskApi(props.project._id);
   };
   return (
     <div className="bg-white p-8 rounded-md w-full">
@@ -154,8 +155,9 @@ function Team(props) {
             />
           </div>
           <div className="lg:ml-40 ml-auto flex space-x-2 h-10">
-            <button className="btn-pri">New Report</button>
-            <button className="btn-sec bg-blue-700">Create</button>
+          {console.log("vvaaaaa", obj)}
+          attendence:{!loading?(obj.points+"/"+State.length):("loading...")}
+          
           </div>
         </div>
       </div>

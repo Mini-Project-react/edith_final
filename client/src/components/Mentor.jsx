@@ -16,7 +16,7 @@ function Mentor(props) {
   const [checkedArray] = useState([]); 
 
   let isInValid = !taskname || !desc;
-
+const obj=useState("")
  const handleChange=(user) => { 
     
   checkedArray.indexOf(user)==-1?checkedArray.push(user):checkedArray.splice(checkedArray.indexOf(user),1)
@@ -267,7 +267,10 @@ details
                               id="mycheck"
                               defaultChecked={checkedArray.indexOf(submit.user)==-1?false:true}
                               onClick={()=>handleChange(submit.user)}
+                              disabled={ showModal.status.find(o=>o.email===submit.user)?showModal.status.find(o=>o.attendence)?false:true:false}
                               > 
+                           
+                              {console.log('asd',showModal.status.find(o=>o.email===submit.user))}
                             </input>
                           </div>
                         </div>

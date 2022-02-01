@@ -8,14 +8,15 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { selectUser } from "../features/userReducer";
 import { useEffect } from "react";
-
+import tick from './tick.png'
 function Team(props) {
   const user = useSelector(selectUser);
   const [showModal, setShowModal] = React.useState("");
+ 
   // actual tasks to display
   const [tasks, setTasks] = useState([]);
   // tasks from, server as backup to set the tasks when the get emptied while searching through them
-  const [State, loading] = useFetch(getTaskApi(props.project._id));
+  const [State, loading , rerender] = useFetch(getTaskApi(props.project._id));
   const obj=props.project.marks.find(o=>o.memid===user.email)
   const [link, setLink] = useState("");
 
@@ -123,6 +124,7 @@ function Team(props) {
       alert("check the fields");
     }
     setShowModal("");
+    rerender();
     console.log("project stored in db");
     getTaskApi(props.project._id);
   };
@@ -221,14 +223,29 @@ function Team(props) {
                             </p>
                           </td>
                           <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                            <div className="h-8 w-8 rounded-full overflow-hidden">
-                              <img
-                                className="object-cover  h-fit"
-                                onClick={() => setShowModal(task)}
-                                src={Upload}
-                                alt=""
-                              />
-                            </div>
+                          {task.status.find(o=>o.email===user.email)
+                            ?  <div className="h-8 w-8 rounded-full overflow-hidden">
+                            <img
+                              className="object-cover  h-fit"
+                              
+                              src={tick}
+                              alt=""
+                              
+                            />
+                            <div className="group-hover:block  bg-gray-800 bg-opacity-70 text-white-light  absolute top-9 right-12   py-1 px-2 text-xs rounded-sm hidden">
+                            alredy marked
+                          </div>
+                          </div>
+                            :  <div className="h-8 w-8 rounded-full overflow-hidden">
+                            <img
+                              className="object-cover  h-fit"
+                              onClick={() => setShowModal(task)}
+                              src={Upload}
+                              alt=""
+                              
+                            />
+                          </div>} 
+                         
                           </td>
                         </tr>
                       </>

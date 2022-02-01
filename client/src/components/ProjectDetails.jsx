@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { selectUser } from "../features/userReducer";
 import { Loader } from ".";
 import { useFetch } from "../use-fetch";
+import { Link } from "react-router-dom";
 
 export default function ProjectDetails() {
   const { id } = useParams();
@@ -117,7 +118,7 @@ export default function ProjectDetails() {
                 >
                   {State.projectname}
                 </h1>
-                <div className="ml-auto">
+                <Link to={`/chat/${State._id}`} className="ml-auto">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-6 w-6"
@@ -130,7 +131,7 @@ export default function ProjectDetails() {
                       clipRule="evenodd"
                     />
                   </svg>
-                </div>
+                </Link>
               </div>
 
               <span className="">
